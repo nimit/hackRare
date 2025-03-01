@@ -1,0 +1,75 @@
+{
+    id: string, // value of firebase auth token
+    age: string,
+    gender: string,
+    height: [
+    {date: datetime, value: number, // in cm; display in ft & in
+    },
+  ],
+  family_history: [
+    {
+    disease: string,
+    relation: string,
+    },
+  ],
+    weight: [
+    {date: datetime, value: number, // in kg; display in lb
+    },
+  ],
+    heart_rate: [
+    {
+        avg: number (in bpm),
+        min: number,
+        max: number,
+        time: datetime, // measurement time
+    },
+  ],
+    blood_pressure: [
+    {
+        low: number,
+        high: number,
+        time: datetime, // measurement time
+    },
+  ],
+    diagnoses: [
+    {
+      disease: string,
+      active: bool,
+      severity: string,
+    },
+  ],
+    immunizations: [
+    {
+      date: datetime,
+      vaccine: string,
+    }
+  ],
+    medications: [
+    {
+      medicine: string,
+      dosage: string, // x mg per day or smething
+      start_date: datetime,
+      end_date: datetime, // null if ongoing
+      side_effects: [], // list of strings to store any side effects reported by the user
+    },
+  ],
+    allergies: [], // list of strings
+    genetic_abnormalities: [
+    {
+      gene_affected: string,
+      date_detected: datetime,
+    },
+  ], // can be null
+  participation: [
+    {
+      studyId: string,
+      participation_start: string,
+      participation_end: string,
+      matched_criteria: string[],
+      patient_feedback: string,
+      rating: number, // patient rating from 1-10
+    },
+  ], // studies participated
+  patient_symptoms: string[], // list of strings - everything patient has described is wrong with them
+  additional_comments: string[],
+}

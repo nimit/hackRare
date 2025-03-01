@@ -1,0 +1,51 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test</title>
+    <script type="module" src="./apis.js"></script>
+</head>
+<body>
+    <h2>Firebase Authentication</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    
+    <button onclick="signin()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <button onclick="signout()">Logout</button>
+
+    <h3>Status:</h3>
+    <p id="message"></p>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test</title>
+    
+    <!-- Include Firebase SDK from CDN -->
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore-compat.js"></script>
+    
+    <script type="module" src="./apis.js"></script>
+</head>
+<body>
+    <h2>Firebase Authentication</h2>
+    <input type="email" id="email" placeholder="Email" value="test@hackrare.com">
+    <input type="password" id="password" placeholder="Password" value="test123">
+    
+    <button onclick="signin()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <button onclick="signout()">Logout</button>
+    <button onclick="insertPatient()">Insert</button>
+
+    <h3>Status:</h3>
+    <p id="message"></p>
+</body>
+</html>

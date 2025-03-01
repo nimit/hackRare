@@ -1,0 +1,94 @@
+{
+    "id": "veqmsR0rIAVJYZSjFrwYnKHBtVK2",
+    "age": 29,
+    "gender": "female",
+    "height": [
+      {
+        "date": "2023-03-01T12:00:00Z",
+        "value": 170
+      }
+    ],
+    "family_history": [
+      {
+        "disease": "Asthma",
+        "relation": "sister"
+      }
+    ],
+    "weight": [
+      {
+        "date": "2023-03-01T12:00:00Z",
+        "value": 65
+      }
+    ],
+    "heart_rate": [
+      {
+        "avg": 90,
+        "min": 85,
+        "max": 95,
+        "time": "2023-03-01T12:00:00Z"
+      }
+    ],
+    "blood_pressure": [
+      {
+        "low": 78,
+        "high": 125,
+        "time": "2023-03-01T12:00:00Z"
+      }
+    ],
+    "diagnoses": [
+      {
+        "disease": "Anxiety",
+        "active": true,
+        "severity": "moderate"
+      }
+    ],
+    "immunizations": [
+      {
+        "date": "2022-05-20T09:00:00Z",
+        "vaccine": "MMR"
+      }
+    ],
+    "medications": [
+      {
+        "medicine": "Sertraline",
+        "dosage": "50 mg per day",
+        "start_date": "2022-06-01T00:00:00Z",
+        "end_date": null,
+        "side_effects": [
+          "Nausea",
+          "Insomnia"
+        ]
+      }
+    ],
+    "allergies": [
+      "Gluten"
+    ],
+    "genetic_abnormalities": [
+      {
+        "gene_affected": "APOE4",
+        "date_detected": "2020-02-15T00:00:00Z"
+      }
+    ],
+    "participation": [
+      {
+        "studyId": "LwflL7FnwEOeBjrEAwck",
+        "participation_start": "2023-01-10T00:00:00Z",
+        "participation_end": "2023-04-10T00:00:00Z",
+        "matched_criteria": [
+          "young adult",
+          "mental health"
+        ],
+        "patient_feedback": "Excellent study with supportive staff",
+        "rating": 10
+      }
+    ],
+    "patient_symptoms": [
+      "Anxiety episodes",
+      "Restlessness"
+    ],
+    "additional_comments": [
+      "Patient expresses concerns about long-term medication",
+      "Recommends more frequent follow-ups"
+    ]
+  }
+  

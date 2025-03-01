@@ -1,0 +1,90 @@
+{
+    "id": "7cu8JSPM3KaEa1QmYY92xcClEkt2",
+    "age": 55,
+    "gender": "male",
+    "height": [
+      {
+        "date": "2021-06-10T08:00:00Z",
+        "value": 175
+      }
+    ],
+    "family_history": [
+      {
+        "disease": "Heart Disease",
+        "relation": "father"
+      },
+      {
+        "disease": "Diabetes",
+        "relation": "sibling"
+      }
+    ],
+    "weight": [
+      {
+        "date": "2023-01-10T08:00:00Z",
+        "value": 82
+      }
+    ],
+    "heart_rate": [
+      {
+        "avg": 80,
+        "min": 75,
+        "max": 88,
+        "time": "2023-01-10T08:00:00Z"
+      }
+    ],
+    "blood_pressure": [
+      {
+        "low": 85,
+        "high": 135,
+        "time": "2023-01-10T08:00:00Z"
+      }
+    ],
+    "diagnoses": [
+      {
+        "disease": "Hypertension",
+        "active": true,
+        "severity": "moderate"
+      }
+    ],
+    "immunizations": [
+      {
+        "date": "2022-10-15T10:00:00Z",
+        "vaccine": "COVID-19 Booster"
+      }
+    ],
+    "medications": [
+      {
+        "medicine": "Lisinopril",
+        "dosage": "10 mg per day",
+        "start_date": "2022-09-01T00:00:00Z",
+        "end_date": null,
+        "side_effects": [
+          "Cough"
+        ]
+      }
+    ],
+    "allergies": [],
+    "genetic_abnormalities": [],
+    "participation": [
+      {
+        "studyId": "qChX3kQ6SUQOgaosVVIt",
+        "participation_start": "2022-11-01T00:00:00Z",
+        "participation_end": "2023-01-01T00:00:00Z",
+        "matched_criteria": [
+          "hypertension",
+          "age 50-60"
+        ],
+        "patient_feedback": "Study required frequent visits",
+        "rating": 7
+      }
+    ],
+    "patient_symptoms": [
+      "Headaches",
+      "Dizziness"
+    ],
+    "additional_comments": [
+      "Patient is stable",
+      "Requires regular monitoring"
+    ]
+  }
+  

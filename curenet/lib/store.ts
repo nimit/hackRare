@@ -4,11 +4,11 @@ import type { User } from 'firebase/auth'
 import type { PatientProfile } from './firestore.ts'
 
 interface AuthState {
-  user: User | null
-  profile: PatientProfile | null
-  setUser: (user: User | null) => void
-  setProfile: (profile: PatientProfile | null) => void
-  clearAuth: () => void
+  user: User | null;
+  profile: PatientProfile | null;
+  setUser: (user: User | null) => void;
+  setProfile: (profile: PatientProfile | null) => void;
+  clearAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -25,4 +25,4 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({ profile: state.profile }), // Only persist profile
     }
   )
-)
+);

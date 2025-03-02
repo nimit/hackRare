@@ -1,0 +1,175 @@
+I am creating a portal for them to participate in clinical studies.
+The portal is written in Next.js setup with the app router method. I have defined headers, footers and a navbar (already included in the layout). The following components are also already present
+
+accordion.tsx
+alert-dialog.tsx
+alert.tsx
+aspect-ratio.tsx
+avatar.tsx
+badge.tsx
+breadcrumb.tsx
+button.tsx
+card.tsx
+carousel.tsx
+chart.tsx
+checkbox.tsx
+collapsible.tsx
+command.tsx
+context-menu.tsx
+date-picker.tsx
+dialog.tsx
+drawer.tsx
+dropdown-menu.tsx
+form.tsx
+hover-card.tsx
+input-otp.tsx
+input.tsx
+label.tsx
+menubar.tsx
+navigation-menu.tsx
+pagination.tsx
+popover.tsx
+progress.tsx
+radio-group.tsx
+resizable.tsx
+scroll-area.tsx
+select.tsx
+separator.tsx
+sheet.tsx
+sidebar.tsx
+skeleton.tsx
+slider.tsx
+sonner.tsx
+switch.tsx
+table.tsx
+tabs.tsx
+textarea.tsx
+toast.tsx
+toaster.tsx
+toggle-group.tsx
+toggle.tsx
+tooltip.tsx
+use-mobile.tsx
+use-toast.ts
+If you need any more details on any component, ask for it. But otherwise, use that component in coding any pages I request.
+
+Also, following are the current dependencies.
+Rewrite any UI pages if they use other alternatives with these (encouraging as much code reuse as possible)
+(CSS is written using tailwind)
+"@hookform/resolvers": "latest",
+"@radix-ui/react-accordion": "latest",
+"@radix-ui/react-alert-dialog": "^1.1.4",
+"@radix-ui/react-aspect-ratio": "^1.1.1",
+"@radix-ui/react-avatar": "^1.1.2",
+"@radix-ui/react-checkbox": "latest",
+"@radix-ui/react-collapsible": "^1.1.2",
+"@radix-ui/react-context-menu": "^2.2.4",
+"@radix-ui/react-dialog": "^1.1.4",
+"@radix-ui/react-dropdown-menu": "^2.1.4",
+"@radix-ui/react-hover-card": "^1.1.4",
+"@radix-ui/react-label": "latest",
+"@radix-ui/react-menubar": "^1.1.4",
+"@radix-ui/react-navigation-menu": "^1.2.3",
+"@radix-ui/react-popover": "latest",
+"@radix-ui/react-progress": "^1.1.1",
+"@radix-ui/react-radio-group": "^1.2.2",
+"@radix-ui/react-scroll-area": "^1.2.2",
+"@radix-ui/react-select": "latest",
+"@radix-ui/react-separator": "^1.1.1",
+"@radix-ui/react-slider": "^1.2.2",
+"@radix-ui/react-slot": "latest",
+"@radix-ui/react-switch": "^1.1.2",
+"@radix-ui/react-tabs": "latest",
+"@radix-ui/react-toast": "^1.2.4",
+"@radix-ui/react-toggle": "^1.1.1",
+"@radix-ui/react-toggle-group": "^1.1.1",
+"@radix-ui/react-tooltip": "^1.1.6",
+"@types/react": "latest",
+"@types/react-dom": "latest",
+"autoprefixer": "^10.4.20",
+"class-variance-authority": "^0.7.1",
+"clsx": "^2.1.1",
+"cmdk": "1.0.4",
+"date-fns": "latest",
+"embla-carousel-react": "8.5.1",
+"firebase": "latest",
+"input-otp": "1.4.1",
+"lucide-react": "^0.454.0",
+"next": "14.2.16",
+"next-themes": "^0.4.4",
+"react": "^18",
+"react-day-picker": "latest",
+"react-dom": "^18",
+"react-hook-form": "latest",
+"react-resizable-panels": "^2.1.7",
+"recharts": "2.15.0",
+"sonner": "^1.7.1",
+"tailwind-merge": "^2.5.5",
+"tailwindcss-animate": "^1.0.7",
+"vaul": "^0.9.6",
+"zod": "latest",
+"zustand": "^5.0.3"
+
+
+  Create a new page for adding a clinical trial by the clinic user. This is the schema for the trial. Encode in a TypeScript object that can be uploaded to the firestore collection "trials".
+  Add a fill with dummy details button and add appropriate values in the dummy data. Below is the schema for a trial.
+  ```
+{
+  NCTID: string, // required id to interface with national databases
+  trial_id: string, // unique identifier for the clinical trial (e.g., auto-generated UUID)
+  phase: string, // clinical trial phase (e.g., "Phase I", "Phase II", "Phase III", "Phase IV")
+  title: string, // title of the clinical trial
+  brief_summary: string, // a brief summary of the trial
+  drug: string, // specific drug administered (or any detail related to it)
+  description: string, // detailed description of the trial objectives and methodology
+  disease_targeted: string, // specific rare disease or condition being studied
+  inclusion_criteria: [ // criteria required for patient enrollment
+    {
+      criterion: string, // description of an inclusion criterion
+    },
+  ],
+  exclusion_criteria: [ // criteria that disqualify patient enrollment
+    {
+      criterion: string, // description of an exclusion criterion
+    },
+  ],
+  enrollment_capacity: number, // maximum number of participants allowed in the trial
+  sponsor: string, // name of the organization sponsoring the trial
+  locations: [ // study site details
+    {
+      location_id: string, // unique identifier for the study site
+      address: string, // street address of the study site
+      city: string,
+      state: string,
+      country: string,
+    },
+  ],
+  start_date: datetime, // trial start date (ISO 8601 format recommended)
+  end_date: datetime, // trial end date or projected completion date
+  status: string, // current status (e.g., "recruiting", "active", "completed", "terminated")
+  contact_info: { // details for trial inquiries (ensuring secure handling per HIPAA)
+    phone: string,
+    email: string,
+    website: string,
+  },
+  data_security_details: string, // summary of security measures (e.g., encryption, access controls) per HIPAA guidelines
+  study_results: [ // records of trial outcomes and interim analyses
+    {
+      date: datetime, // date when results were recorded
+      result_summary: string, // concise summary of study findings
+      outcome: string, // description of the outcome (e.g., "positive", "negative", "inconclusive")
+    },
+  ],
+  adverse_events: [ // logged adverse events during the trial
+    {
+      date: datetime, // date of the adverse event
+      event_description: string, // detailed description of the adverse event
+      severity: string, // severity level (e.g., "mild", "moderate", "severe")
+    },
+  ],
+  created_at: datetime, // timestamp when the trial record was created
+  updated_at: datetime, // timestamp when the trial record was last updated
+  additional_comments: string[], // list of additional remarks or notes regarding the trial
+  matching_criteria: string[], // list of specific criteria used to match participants (e.g., genetic markers, symptom profiles)
+}
+  ```

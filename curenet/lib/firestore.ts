@@ -9,7 +9,8 @@ import {
   DocumentData,
   QueryDocumentSnapshot,
   updateDoc,
-  Timestamp
+  Timestamp,
+  setDoc
 } from "firebase/firestore"
 import { db } from "./firebase"
 import { UserProfile } from './clinic_store'
@@ -78,6 +79,18 @@ class FirestoreService {
       FirestoreService.instance = new FirestoreService()
     }
     return FirestoreService.instance
+  }
+
+  async newTrial(trial: any): Promise<boolean> {
+    try {
+      const docRef = doc(collection(db, "trials")); // Generate document reference with ID
+      const trial_id = docRef.id;
+      await setDoc(docRef, {...trial, trial_id});
+      return true;
+    } catch(error) {
+      console.error('Error creating new trial', error)
+      return false
+    }
   }
 
   // Get user profile by auth ID (works for both patient and clinic users)

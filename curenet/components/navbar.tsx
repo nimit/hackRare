@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import { auth } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { ThemeToggle } from './theme-provider';
+import Image from 'next/image';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,11 +27,27 @@ export function Navbar() {
 
   return (
     <nav className="w-full bg-background border-b border-border shadow-sm">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <span className="text-primary text-2xl font-bold">CURE NET</span>
+              <div className="relative w-40 h-12 overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Image
+                    src="/favicon_io/android-chrome-512x512.png"
+                    alt="CURE NET"
+                    width={100}
+                    height={100}
+                    className="object-cover"
+                    style={{
+                      objectPosition: '0 50%',
+                      maxWidth: '100%',
+                      maxHeight: '150%',
+                    }}
+                    priority
+                  />
+                </div>
+              </div>
             </Link>
           </div>
 
@@ -47,6 +64,12 @@ export function Navbar() {
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Privacy Policy
+            </Link>
+            <Link
+              href="/contact"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Contact
             </Link>
             <ThemeToggle />
             {isLoggedIn ? (
@@ -91,14 +114,24 @@ export function Navbar() {
               >
                 Privacy Policy
               </Link>
+              <Link
+                href="/contact"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
               {isLoggedIn ? (
                 <Button
                   asChild
                   variant="default"
                   className="w-full mt-2"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    auth.signOut();
+                    setIsOpen(false);
+                  }}
                 >
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/login">Sign Out</Link>
                 </Button>
               ) : (
                 <Button

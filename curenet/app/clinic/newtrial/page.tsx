@@ -9,7 +9,6 @@ import { DatePicker } from "@/components/ui/date-picker";
 import {useRouter} from "next/navigation";
 import {firestore} from "@/lib/firestore";
 import { SuccessPopup } from "@/components/success-popup";
-import { setTimeout } from "timers/promises";
 
 interface TrialFormValues {
   NCTID: string;
@@ -108,7 +107,6 @@ const AddTrialPage = () => {
     await firestore.newTrial(trial);
     setSuccess(true);
     setLoading(false);
-    await setTimeout(1000);    
     router.push("/clinic/dashboard");
   };
 

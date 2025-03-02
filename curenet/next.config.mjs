@@ -5,14 +5,14 @@
 //   // ignore error
 // }
 
-const isProd = process.env.NODE_ENV === 'production';
+// const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  assetPrefix: isProd ? '/hackRare/' : '',
-  basePath: isProd ? '/hackRare' : '',
-  output: 'export',
+  // assetPrefix: isProd ? '/hackRare/' : '',
+  // basePath: isProd ? '/hackRare' : '',
+  // output: 'export',
   eslint: {
     ignoreDuringBuilds: true,
   },

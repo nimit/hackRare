@@ -81,7 +81,7 @@ const patientData = JSON.parse(`{
     ],
     "participation": [
       {
-        "studyId": "dK0BptAsYCuvxriOuE4S",
+        "trial_id": "dK0BptAsYCuvxriOuE4S",
         "participation_start": "2023-02-01T00:00:00Z",
         "participation_end": "2023-05-01T00:00:00Z",
         "matched_criteria": [

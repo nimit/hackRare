@@ -1,0 +1,106 @@
+Title: Create Website Pages for CURE NET
+
+Overview:
+Build a modern, aesthetically pleasing web interface for “CURE NET – Clinical Unified Research Network,” a portal dedicated to clinical trials. The project requires two main pages: an attractive Landing Page and a comprehensive Login/Signup Page. Use responsive, accessible design principles and modern UI patterns throughout.
+
+1. Landing Page Requirements:
+
+Header & Branding:
+
+Display the application name “CURE NET” prominently along with its full title “Clinical Unified Research Network.”
+Use a clean, professional design with a modern color scheme (e.g., blues, whites, and subtle accent colors).
+Dynamic Call-to-Action:
+
+If the user is logged in: Show a prominent “Dashboard” button that navigates to the user’s dashboard.
+If the user is not logged in: Display a “Login/Signup” button.
+Layout & Navigation:
+
+Include a top navigation bar with the logo, application name, and links (e.g., About, Contact, Privacy Policy).
+Ensure the page is responsive for mobile and desktop viewports.
+Add a clean footer with basic links.
+2. Login/Signup Page Requirements:
+
+Login Section:
+
+Provide fields for essential login credentials (e.g., email and password).
+Include standard features such as “Forgot Password” links and clear error messaging.
+Signup Section:
+
+Data Capture: Build a dynamic form that captures the detailed user data below. Organize the form into sections for clarity and use appropriate input types (date pickers, dropdowns, checkboxes, etc.).
+
+User Details:
+user_id: (Hidden field populated with the Firebase auth token upon signup)
+name: Text input
+age: Number or text input
+gender: Dropdown or radio buttons
+Physical Measurements:
+height: Allow multiple entries, each with:
+date: Date/Time picker
+value: Number input (in cm; display conversion in ft & in next to the field)
+weight: Allow multiple entries, each with:
+date: Date/Time picker
+value: Number input (in kg; display conversion in lb next to the field)
+Family & Medical History:
+family_history: Multiple entries with:
+disease: Text input
+relation: Text input
+heart_rate: Multiple entries with:
+avg: Number input (bpm)
+min: Number input
+max: Number input
+time: Date/Time picker
+blood_pressure: Multiple entries with:
+low: Number input
+high: Number input
+time: Date/Time picker
+diagnoses: Multiple entries with:
+disease: Text input
+active: Checkbox (boolean)
+severity: Dropdown or text input for severity level
+immunizations: Multiple entries with:
+date: Date/Time picker
+vaccine: Text input
+medications: Multiple entries with:
+medicine: Text input
+dosage: Text input (e.g., “x mg per day”)
+start_date: Date/Time picker
+end_date: Date/Time picker (allow empty for ongoing)
+side_effects: Dynamic list (allow adding multiple strings)
+allergies: Dynamic field for a list of strings.
+genetic_abnormalities: Multiple entries with:
+gene_affected: Text input
+date_detected: Date/Time picker
+participation: Multiple entries with:
+trial_id: Text input
+participation_start: Date/Time picker or text input
+participation_end: Date/Time picker or text input
+matched_criteria: Dynamic list (multiple strings)
+patient_feedback: Textarea
+rating: Number input (range 1–10)
+patient_symptoms: Dynamic field for a list of strings.
+additional_comments: Dynamic field for multiple text entries or a textarea.
+Autofill Dummy Data Button:
+
+Include a button labeled “Autofill Dummy Data” that, when clicked, populates all the signup fields with realistic sample data (including multiple entries for multi-item sections). This will help users/testers see the complete form functionality.
+UI/UX Considerations:
+
+Use clear labels, tooltips, and error messages for each field.
+Organize the form into collapsible sections or tabs if the form becomes too lengthy.
+Ensure that all controls are responsive and intuitive.
+For height and weight, include live conversion functions that show the imperial values (ft/in for height, lb for weight) alongside the metric input.
+Technical Considerations:
+
+Integrate with Firebase Authentication: Automatically capture the Firebase auth token as the user_id upon signup.
+Follow best practices in web development: semantic HTML, modular CSS, and clean JavaScript (or your chosen framework).
+Comment the code thoroughly to aid future maintenance.
+3. General Requirements:
+
+Aesthetic & Responsive Design:
+The design should be modern, minimalist, and user-friendly.
+Use a consistent color palette, typography, and spacing.
+Ensure the pages are fully responsive across devices.
+Accessibility:
+Make sure all elements are accessible (ARIA labels, keyboard navigation, etc.).
+Clean Code & Documentation:
+Include clear comments and structure the code in an organized manner.
+Ensure maintainability and ease of future enhancements.

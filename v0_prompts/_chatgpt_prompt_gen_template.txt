@@ -1,0 +1,164 @@
+I am creating a portal for a platform that helps individuals afflicted with rare diseases to participate in specialized clinical trials with the utmost focus on security, privacy and automatically matching individuals with clinical studies based on their data.
+The application is named CURE NET (Clinical Unified Research Network).
+Your task is to understand and expand the list of tasks into detailed instructions.
+Write a detailed prompt that explains how to create the website pages as per my instructions.
+Also include any logic/navigation that should be added.
+We are using firebase auth and firestore for backend connection and react for the frontend (using next.js). All the api calls and interaction should be directly from react.js because the end goal is to export as a static website (only HTML/CSS/JS) website.
+
+The tasks are:
+- Remove "Google sign-in"
+- Add a light/dark mode toggle button
+- Create an beautiful, attention grabbing landing page with a big hero section and use the '/' route to redirect to it. The landing page can redirect to the login/signup page at path '/login' if the user is not logged in.
+If the user is signed in, only have a single button that will lead the user to the dashboard.
+As the user is logged in, store that users document from firestore on path: "patient_users/uid" where uid is the uid from firebase auth userCredential.
+- Design a dashboard that retrieves trial data from the "trials" collection on firestore. It will retrieve documents from path "trials/trial_id" where trial_id is the from the list of ids where the user can participate from the "approved_trials" field. Limit to 5 trials and display them in a card format. When the user clicks on the card, redirect to page 'trial/trial_id' that shows detail of the trial.
+
+The patient model is:
+```
+{
+    user_id: string, // value of firebase auth token
+    name: string,
+    age: string,
+    gender: string,
+    height: [
+    {date: datetime, value: number, // in cm; display in ft & in
+    },
+  ],
+  family_history: [
+    {
+    disease: string,
+    relation: string,
+    },
+  ],
+    weight: [
+    {date: datetime, value: number, // in kg; display in lb
+    },
+  ],
+    heart_rate: [
+    {
+        avg: number (in bpm),
+        min: number,
+        max: number,
+        time: datetime, // measurement time
+    },
+  ],
+    blood_pressure: [
+    {
+        low: number,
+        high: number,
+        time: datetime, // measurement time
+    },
+  ],
+    diagnoses: [
+    {
+      disease: string,
+      active: bool,
+      severity: string,
+    },
+  ],
+    immunizations: [
+    {
+      date: datetime,
+      vaccine: string,
+    }
+  ],
+    medications: [
+    {
+      medicine: string,
+      dosage: string, // x mg per day or smething
+      start_date: datetime,
+      end_date: datetime, // null if ongoing
+      side_effects: [], // list of strings to store any side effects reported by the user
+    },
+  ],
+    allergies: [], // list of strings
+    genetic_abnormalities: [
+    {
+      gene_affected: string,
+      date_detected: datetime,
+    },
+  ], // can be null
+  approved_trials: string[], // List of approved trials
+  participation: [
+    {
+      trial_id: string,
+      participation_start: string,
+      participation_end: string,
+      matched_criteria: string[],
+      patient_feedback: string,
+      rating: number, // patient rating from 1-10
+    },
+  ], // studies participated
+  patient_symptoms: string[], // list of strings - everything patient has described is wrong with them
+  additional_comments: string[],
+}
+```
+
+The trial model is:
+```
+{
+    NCTID: string, // required id to interface with national databases
+    trial_id: string, // unique identifier for the clinical trial (e.g., auto-generated UUID)
+    phase: string, // clinical trial phase (e.g., "Phase I", "Phase II", "Phase III", "Phase IV")
+    title: string, // title of the clinical trial
+    brief_summary: string, // a brief summary of the trial
+    drug: string, // specific drug administered (or any detail related to it)
+    description: string, // detailed description of the trial objectives and methodology
+    disease_targeted: string, // specific rare disease or condition being studied
+    inclusion_criteria: [ // criteria required for patient enrollment
+      {
+        criterion: string, // description of an inclusion criterion
+      },
+    ],
+    exclusion_criteria: [ // criteria that disqualify patient enrollment
+      {
+        criterion: string, // description of an exclusion criterion
+      },
+    ],
+    enrollment_capacity: number, // maximum number of participants allowed in the trial
+    sponsor: string, // name of the organization sponsoring the trial
+    locations: [ // study site details
+      {
+        location_id: string, // unique identifier for the study site
+        address: string, // street address of the study site
+        city: string,
+        state: string,
+        country: string,
+      },
+    ],
+    start_date: datetime, // trial start date (ISO 8601 format recommended)
+    end_date: datetime, // trial end date or projected completion date
+    status: string, // current status (e.g., "recruiting", "active", "completed", "terminated")
+    contact_info: { // details for trial inquiries (ensuring secure handling per HIPAA)
+      phone: string,
+      email: string,
+      website: string,
+    },
+    data_security_details: string, // summary of security measures (e.g., encryption, access controls) per HIPAA guidelines
+    study_results: [ // records of trial outcomes and interim analyses
+      {
+        date: datetime, // date when results were recorded
+        result_summary: string, // concise summary of study findings
+        outcome: string, // description of the outcome (e.g., "positive", "negative", "inconclusive")
+      },
+    ],
+    adverse_events: [ // logged adverse events during the trial
+      {
+        date: datetime, // date of the adverse event
+        event_description: string, // detailed description of the adverse event
+        severity: string, // severity level (e.g., "mild", "moderate", "severe")
+      },
+    ],
+    created_at: datetime, // timestamp when the trial record was created
+    updated_at: datetime, // timestamp when the trial record was last updated
+    additional_comments: string[], // list of additional remarks or notes regarding the trial
+    matching_criteria: string[], // list of specific criteria used to match participants (e.g., genetic markers, symptom profiles)
+  }
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Now create a prompt for the following tasks:
+- 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------

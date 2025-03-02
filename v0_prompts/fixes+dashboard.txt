@@ -1,0 +1,130 @@
+Overview
+CURE NET is a clinical research platform designed to securely and privately match individuals with rare diseases to specialized clinical trials. The portal is built using Next.js and React for the frontend, while Firebase Auth and Firestore handle authentication and database operations. Key features include:
+
+Removal of the Google sign-in option.
+A light/dark mode toggle that persists user preference.
+An attention-grabbing landing page with a hero section.
+Conditional redirection based on authentication state.
+A secure dashboard that displays up to 5 approved clinical trials for each patient.
+Detailed trial pages that fetch trial information on demand.
+Detailed Instructions
+1. Authentication Changes
+Remove Google Sign-in:
+
+Audit your Firebase Auth implementation and remove any components or buttons that support Google sign-in.
+Ensure that only email/password (or any alternative approved method) remains for user authentication.
+Update any related UI/UX to remove references to Google sign-in.
+User Document Storage:
+
+After a successful login/signup, retrieve the uid from the Firebase Auth userCredential.
+Store or update the corresponding user document in Firestore under the path: patient_users/{uid}
+The document should adhere to the provided patient model.
+2. Light/Dark Mode Toggle
+Global Theme Toggle:
+Create a toggle component (e.g., in a header or a settings menu) that allows the user to switch between light and dark themes.
+Use React Context (or a similar state management solution) to store the current theme state.
+Persist the theme selection using local storage, so that the preference is maintained on page reload.
+Apply conditional CSS classes (or utilize a CSS framework that supports theming) to change the appearance of the site accordingly.
+3. Landing Page ('/' Route)
+Design and Layout:
+
+Develop a visually striking landing page with a large, full-width hero section.
+Include a bold call-to-action (CTA) that communicates the mission of CURE NET (e.g., “Join CURE NET to access specialized clinical trials”).
+Use high-quality images or graphics that resonate with the clinical research theme.
+Authentication Logic:
+
+On page load, check the Firebase Auth state:
+If the user is not logged in: Display a prominent button that redirects to the /login page.
+If the user is logged in: Replace the CTA with a single button labeled (for example) “Go to Dashboard” that navigates to the dashboard page.
+Implement client-side redirection logic within the landing page’s component lifecycle (or using hooks like useEffect in React).
+4. Login/Signup Page (/login Route)
+Form Setup:
+
+Create a user-friendly login/signup form that collects email and password credentials.
+Ensure that all UI components and messaging are consistent with the platform’s design.
+Remove any remnants of Google sign-in options from this page.
+User Flow:
+
+On successful authentication:
+Save or update the user’s document in Firestore under patient_users/{uid}.
+Redirect the user to the dashboard page.
+Handle errors gracefully (e.g., invalid credentials, network issues) with user-friendly messages.
+5. Dashboard Page
+Access and Authorization:
+
+Protect the dashboard route so that only authenticated users can access it. If a user is not logged in, redirect them to the /login page.
+Data Retrieval:
+
+Once authenticated, fetch the patient document from Firestore using the uid.
+Extract the approved_trials field (an array of trial IDs) from the patient document.
+For each trial ID (limit to 5), perform a Firestore query to retrieve the corresponding trial document from: trials/{trial_id}
+UI Components:
+
+Display the retrieved trials in a card layout. Each card should at least include:
+Title: Trial title
+Phase: Clinical trial phase
+Summary: A brief summary or description
+Disease Targeted: The condition being studied
+Sponsor & Status: Sponsor name and current trial status
+Add an interactive hover or click state to each card.
+Navigation:
+
+When a user clicks on a trial card, use Next.js routing to navigate to the trial detail page at: /trial/{trial_id}
+6. Trial Detail Page (/trial/[trial_id])
+Dynamic Routing:
+
+Implement Next.js dynamic routing to handle trial detail pages.
+Use the URL parameter (trial_id) to fetch the corresponding trial document from Firestore.
+Display Content:
+
+Show comprehensive trial information including:
+Basic Details: Title, phase, brief summary, and full description.
+Drug Information: Specific drug or treatment details.
+Criteria: Inclusion and exclusion criteria.
+Enrollment: Capacity, sponsor details, and study locations.
+Dates & Contact: Start/end dates, and secure contact information.
+Security Measures: Data security details as per HIPAA guidelines.
+Study Results & Adverse Events: If available, display summaries of study results and any logged adverse events.
+Include a “Back to Dashboard” button or navigation link.
+7. Navigation & Routing Logic
+Page Structure:
+
+Home (/): Landing page with conditional redirection based on auth state.
+Login (/login): Login/signup page for user authentication.
+Dashboard: A protected route that displays a card-based list of approved trials.
+Trial Detail (/trial/[trial_id]): Dynamic route to display individual trial details.
+Client-side Routing:
+
+Use Next.js Link components for all in-app navigation.
+Ensure that navigation logic (including protected routes) checks Firebase Auth state on the client side.
+Incorporate fallback logic for scenarios where a user tries to access protected pages without being logged in.
+8. Security and Data Handling
+Firebase Security Rules:
+Configure Firestore and Firebase Auth security rules to ensure that data access complies with privacy regulations.
+Ensure that sensitive patient data is only accessible to authorized users.
+Data Fetching:
+All Firestore interactions should occur client-side within React components.
+Use async/await or promise-based handling for API calls.
+Implement error handling (e.g., try/catch blocks) to manage network or data issues.
+9. Exporting as a Static Website
+Static Export Considerations:
+Since the final product is a static export, ensure that all API interactions are performed on the client.
+Do not use Next.js server-side functions (like getServerSideProps); opt for client-side data fetching.
+Use next export to build the static site.
+Verify that Firebase configuration (API keys, etc.) is secure and that no sensitive information is embedded in the exported code.
+10. Additional UI/UX & Error Handling
+Responsive Design:
+
+Ensure that all pages (landing, login, dashboard, trial details) are responsive and optimized for various devices.
+Test the UI on different screen sizes to maintain consistency.
+Error States:
+
+Display clear error messages for:
+Failed authentication or registration attempts.
+Issues with fetching data from Firestore.
+Unauthorized access to protected routes.
+Consider adding loading spinners or skeleton screens while data is being fetched.
+Performance Optimizations:
+
+Optimize images and assets used on the landing page and dashboard.
+Implement code splitting or lazy loading where possible to reduce initial load times.

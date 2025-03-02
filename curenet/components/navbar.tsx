@@ -1,28 +1,28 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
-import { auth } from "@/lib/firebase"
-import { onAuthStateChanged } from "firebase/auth"
-import { ThemeToggle } from "./theme-provider"
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { ThemeToggle } from './theme-provider';
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user)
-    })
+      setIsLoggedIn(!!user);
+    });
 
-    return () => unsubscribe()
-  }, [])
+    return () => unsubscribe();
+  }, []);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <nav className="w-full bg-background border-b border-border shadow-sm">
@@ -36,10 +36,16 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              href="/about"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
               About
             </Link>
-            <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              href="/privacy"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
               Privacy Policy
             </Link>
             <ThemeToggle />
@@ -54,14 +60,13 @@ export function Navbar() {
             )}
           </div>
 
-            
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
             <ThemeToggle />
             <button
               onClick={toggleMenu}
               className="text-muted-foreground hover:text-foreground focus:outline-none"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -87,11 +92,21 @@ export function Navbar() {
                 Privacy Policy
               </Link>
               {isLoggedIn ? (
-                <Button asChild variant="default" className="w-full mt-2" onClick={() => setIsOpen(false)}>
+                <Button
+                  asChild
+                  variant="default"
+                  className="w-full mt-2"
+                  onClick={() => setIsOpen(false)}
+                >
                   <Link href="/dashboard">Dashboard</Link>
                 </Button>
               ) : (
-                <Button asChild variant="default" className="w-full mt-2" onClick={() => setIsOpen(false)}>
+                <Button
+                  asChild
+                  variant="default"
+                  className="w-full mt-2"
+                  onClick={() => setIsOpen(false)}
+                >
                   <Link href="/login">Login / Signup</Link>
                 </Button>
               )}
@@ -100,5 +115,5 @@ export function Navbar() {
         )}
       </div>
     </nav>
-  )
+  );
 }

@@ -1,103 +1,140 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { auth, db } from "@/lib/firebase"
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { auth, db } from '@/lib/firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-} from "firebase/auth"
-import { doc, setDoc, serverTimestamp } from "firebase/firestore"
+} from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
-import { Navbar } from "@/components/navbar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { DatePicker } from "@/components/ui/date-picker"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray } from "react-hook-form"
-import { X, Plus } from "lucide-react"
-import { useAuthStore } from "@/lib/store"
-import { Checkbox } from "@/components/ui/checkbox"
-import { FormDescription } from "@/components/ui/form"
+import { Navbar } from '@/components/navbar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { X, Plus } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { FormDescription } from '@/components/ui/form';
 import dummyData from './dummy-data';
+import { SuccessPopup } from '@/components/success-popup';
 
 // Helper function to convert kg to lb
 const kgToLb = (kg: number) => {
-  return (kg * 2.20462).toFixed(1)
-}
+  return (kg * 2.20462).toFixed(1);
+};
 
 // Helper function to convert cm to ft and inches
 const cmToFtIn = (cm: number) => {
-  const totalInches = cm / 2.54
-  const feet = Math.floor(totalInches / 12)
-  const inches = Math.round(totalInches % 12)
-  return `${feet}' ${inches}"`
-}
+  const totalInches = cm / 2.54;
+  const feet = Math.floor(totalInches / 12);
+  const inches = Math.round(totalInches % 12);
+  return `${feet}' ${inches}"`;
+};
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [activeTab, setActiveTab] = useState("login")
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState('login');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Check if user is already logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        router.push("/dashboard")
+        router.push('/dashboard');
       }
-    })
+    });
 
-    return () => unsubscribe()
-  }, [router])
+    return () => unsubscribe();
+  }, [router]);
 
   // Login form state
-  const [loginEmail, setLoginEmail] = useState("")
-  const [loginPassword, setLoginPassword] = useState("")
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
   // Handle login
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-      // const profile = await firebaseService.getUserProfile(userCredential.user.uid)
-      useAuthStore.getState().setUser(userCredential.user)
-      // useAuthStore.getState().setProfile(profile)
-      router.push("/dashboard")
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      useAuthStore.getState().setUser(userCredential.user);
+
+      // Show success message
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
+
+      // Show loading for at least 1 second
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      router.push('/dashboard');
     } catch (error: any) {
-      setError(error.message)
-    } finally {
-      setIsLoading(false)
+      setError(error.message);
+      setIsLoading(false);
     }
-  }
+  };
 
   // Define schema for signup form
   const signupSchema = z.object({
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-    name: z.string().min(2, { message: "Name is required" }),
+    email: z.string().email({ message: 'Please enter a valid email address' }),
+    password: z
+      .string()
+      .min(8, { message: 'Password must be at least 8 characters' }),
+    name: z.string().min(2, { message: 'Name is required' }),
     age: z.coerce.number().min(1).max(120),
     isMinor: z.boolean().default(false),
-    gender: z.string().min(1, { message: "Please select your gender" }),
+    gender: z.string().min(1, { message: 'Please select your gender' }),
     height: z
       .array(
         z.object({
           date: z.date(),
           value: z.coerce.number().min(50).max(250),
-        }),
+        })
       )
       .min(1),
     weight: z
@@ -105,14 +142,14 @@ export default function LoginPage() {
         z.object({
           date: z.date(),
           value: z.coerce.number().min(20).max(300),
-        }),
+        })
       )
       .min(1),
     family_history: z.array(
       z.object({
         disease: z.string().min(1),
         relation: z.string().min(1),
-      }),
+      })
     ),
     heart_rate: z.array(
       z.object({
@@ -120,27 +157,27 @@ export default function LoginPage() {
         min: z.coerce.number().min(30).max(200),
         max: z.coerce.number().min(30).max(200),
         time: z.date(),
-      }),
+      })
     ),
     blood_pressure: z.array(
       z.object({
         low: z.coerce.number().min(40).max(150),
         high: z.coerce.number().min(80).max(250),
         time: z.date(),
-      }),
+      })
     ),
     diagnoses: z.array(
       z.object({
         disease: z.string().min(1),
         active: z.boolean().default(true),
         severity: z.string().min(1),
-      }),
+      })
     ),
     immunizations: z.array(
       z.object({
         date: z.date(),
         vaccine: z.string().min(1),
-      }),
+      })
     ),
     medications: z.array(
       z.object({
@@ -149,14 +186,14 @@ export default function LoginPage() {
         start_date: z.date(),
         end_date: z.date().nullable().optional(),
         side_effects: z.array(z.string().min(1)),
-      }),
+      })
     ),
     allergies: z.array(z.string().min(1)),
     genetic_abnormalities: z.array(
       z.object({
         gene_affected: z.string().min(1),
         date_detected: z.date(),
-      }),
+      })
     ),
     participation: z.array(
       z.object({
@@ -164,41 +201,54 @@ export default function LoginPage() {
         participation_start: z.date(),
         participation_end: z.date().nullable().optional(),
         matched_criteria: z.array(z.string().min(1)),
-      }),
+      })
     ),
     patient_feedback: z.string().optional(),
     rating: z.coerce.number().min(1).max(10).optional(),
     patient_symptoms: z.array(z.string().min(1)),
     additional_comments: z.string().optional(),
-  })
+  });
 
   // Create form
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      name: "",
+      email: '',
+      password: '',
+      name: '',
       age: 0,
       isMinor: false,
-      gender: "",
+      gender: '',
       height: [{ date: new Date(), value: 170 }],
       weight: [{ date: new Date(), value: 70 }],
-      family_history: [{ disease: "", relation: "" }],
+      family_history: [{ disease: '', relation: '' }],
       heart_rate: [{ avg: 70, min: 60, max: 100, time: new Date() }],
       blood_pressure: [{ low: 70, high: 120, time: new Date() }],
-      diagnoses: [{ disease: "", active: true, severity: "" }],
-      immunizations: [{ date: new Date(), vaccine: "" }],
-      medications: [{ medicine: "", dosage: "", start_date: new Date(), side_effects: [""] }],
-      allergies: [""],
-      genetic_abnormalities: [{ gene_affected: "", date_detected: new Date() }],
-      participation: [{ studyId: "", participation_start: new Date(), matched_criteria: [""] }],
-      patient_feedback: "",
+      diagnoses: [{ disease: '', active: true, severity: '' }],
+      immunizations: [{ date: new Date(), vaccine: '' }],
+      medications: [
+        {
+          medicine: '',
+          dosage: '',
+          start_date: new Date(),
+          side_effects: [''],
+        },
+      ],
+      allergies: [''],
+      genetic_abnormalities: [{ gene_affected: '', date_detected: new Date() }],
+      participation: [
+        {
+          studyId: '',
+          participation_start: new Date(),
+          matched_criteria: [''],
+        },
+      ],
+      patient_feedback: '',
       rating: 5,
-      patient_symptoms: [""],
-      additional_comments: "",
+      patient_symptoms: [''],
+      additional_comments: '',
     },
-  })
+  });
 
   // Create field arrays for multiple entries
   const {
@@ -207,8 +257,8 @@ export default function LoginPage() {
     remove: removeHeight,
   } = useFieldArray({
     control: form.control,
-    name: "height",
-  })
+    name: 'height',
+  });
 
   const {
     fields: weightFields,
@@ -216,8 +266,8 @@ export default function LoginPage() {
     remove: removeWeight,
   } = useFieldArray({
     control: form.control,
-    name: "weight",
-  })
+    name: 'weight',
+  });
 
   const {
     fields: familyHistoryFields,
@@ -225,8 +275,8 @@ export default function LoginPage() {
     remove: removeFamilyHistory,
   } = useFieldArray({
     control: form.control,
-    name: "family_history",
-  })
+    name: 'family_history',
+  });
 
   const {
     fields: heartRateFields,
@@ -234,8 +284,8 @@ export default function LoginPage() {
     remove: removeHeartRate,
   } = useFieldArray({
     control: form.control,
-    name: "heart_rate",
-  })
+    name: 'heart_rate',
+  });
 
   const {
     fields: bloodPressureFields,
@@ -243,8 +293,8 @@ export default function LoginPage() {
     remove: removeBloodPressure,
   } = useFieldArray({
     control: form.control,
-    name: "blood_pressure",
-  })
+    name: 'blood_pressure',
+  });
 
   const {
     fields: diagnosesFields,
@@ -252,8 +302,8 @@ export default function LoginPage() {
     remove: removeDiagnosis,
   } = useFieldArray({
     control: form.control,
-    name: "diagnoses",
-  })
+    name: 'diagnoses',
+  });
 
   const {
     fields: immunizationsFields,
@@ -261,8 +311,8 @@ export default function LoginPage() {
     remove: removeImmunization,
   } = useFieldArray({
     control: form.control,
-    name: "immunizations",
-  })
+    name: 'immunizations',
+  });
 
   const {
     fields: medicationsFields,
@@ -270,8 +320,8 @@ export default function LoginPage() {
     remove: removeMedication,
   } = useFieldArray({
     control: form.control,
-    name: "medications",
-  })
+    name: 'medications',
+  });
 
   const {
     fields: allergiesFields,
@@ -279,8 +329,8 @@ export default function LoginPage() {
     remove: removeAllergy,
   } = useFieldArray({
     control: form.control,
-    name: "allergies",
-  })
+    name: 'allergies',
+  });
 
   const {
     fields: geneticAbnormalitiesFields,
@@ -288,8 +338,8 @@ export default function LoginPage() {
     remove: removeGeneticAbnormality,
   } = useFieldArray({
     control: form.control,
-    name: "genetic_abnormalities",
-  })
+    name: 'genetic_abnormalities',
+  });
 
   const {
     fields: participationFields,
@@ -297,8 +347,8 @@ export default function LoginPage() {
     remove: removeParticipation,
   } = useFieldArray({
     control: form.control,
-    name: "participation",
-  })
+    name: 'participation',
+  });
 
   const {
     fields: patientSymptomsFields,
@@ -306,8 +356,8 @@ export default function LoginPage() {
     remove: removePatientSymptom,
   } = useFieldArray({
     control: form.control,
-    name: "patient_symptoms",
-  })
+    name: 'patient_symptoms',
+  });
 
   // Nested field arrays for side effects and matched criteria
   const {
@@ -316,8 +366,8 @@ export default function LoginPage() {
     remove: removeSideEffect,
   } = useFieldArray({
     control: form.control,
-    name: "medications.0.side_effects",
-  })
+    name: 'medications.0.side_effects',
+  });
 
   const {
     fields: matchedCriteriaFields,
@@ -325,18 +375,21 @@ export default function LoginPage() {
     remove: removeMatchedCriteria,
   } = useFieldArray({
     control: form.control,
-    name: "participation.0.matched_criteria",
-  })
+    name: 'participation.0.matched_criteria',
+  });
 
   // Handle signup
   const onSubmit = async (values: z.infer<typeof signupSchema>) => {
-    setIsLoading(true)
-    setError("")
+    setIsLoading(true);
+    setError('');
 
     try {
-      // Create user with email and password
-      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password)
-      const user = userCredential.user
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      const user = userCredential.user;
 
       // Create user document in Firestore
       const userData = {
@@ -344,49 +397,58 @@ export default function LoginPage() {
         user_id: user.uid,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-      }
+      };
 
-      // Remove email and password from the data to be stored
-      delete userData.email
-      delete userData.password
+      delete userData.email;
+      delete userData.password;
 
-      // Save to Firestore
-      await setDoc(doc(db, "patients", user.uid), userData)
+      await setDoc(doc(db, 'patients', user.uid), userData);
 
-      useAuthStore.getState().setUser(user)
-      useAuthStore.getState().setProfile(userData)
+      useAuthStore.getState().setUser(user);
+      useAuthStore.getState().setProfile(userData);
 
-      router.push("/dashboard")
+      // Show loading for at least 1 second
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      router.push('/dashboard');
     } catch (error: any) {
-      setError(error.message)
+      setError(error.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // Fill form with dummy data
   const fillDummyData = () => {
-    form.reset(dummyData)
-  }
+    form.reset(dummyData);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Loading overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-white/90 dark:bg-gray-950/90 z-50 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-50"></div>
+        </div>
+      )}
+
       {/* <Navbar /> */}
 
       <main className="flex-grow py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="mx-auto mb-8">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-
+        <div className="container mx-auto px-4 py-12">
+          <Tabs
+            defaultValue="login"
+            value={activeTab}
+            onValueChange={setActiveTab}
+          >
             {/* Login Tab */}
             <TabsContent value="login">
               <Card className="mx-auto max-w-md">
                 <CardHeader>
                   <CardTitle className="text-2xl">Login to CURE NET</CardTitle>
-                  <CardDescription>Enter your credentials to access your account</CardDescription>
+                  <CardDescription>
+                    Enter your credentials to access your account
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleLogin} className="space-y-4">
@@ -408,8 +470,10 @@ export default function LoginPage() {
                           href="#"
                           className="text-sm text-blue-600 hover:underline"
                           onClick={(e) => {
-                            e.preventDefault()
-                            alert("Password reset functionality would be implemented here")
+                            e.preventDefault();
+                            alert(
+                              'Password reset functionality would be implemented here'
+                            );
                           }}
                         >
                           Forgot password?
@@ -425,20 +489,26 @@ export default function LoginPage() {
                       />
                     </div>
 
-                    {error && <div className="text-red-500 text-sm py-2">{error}</div>}
+                    {error && (
+                      <div className="text-red-500 text-sm py-2">{error}</div>
+                    )}
 
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? "Logging in..." : "Login"}
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? 'Logging in...' : 'Login'}
                     </Button>
                   </form>
                 </CardContent>
                 <CardFooter>
                   <p className="text-center text-sm text-muted-foreground w-full">
-                    Don't have an account?{" "}
+                    Don't have an account?{' '}
                     <button
                       type="button"
                       className="text-blue-600 hover:underline"
-                      onClick={() => setActiveTab("signup")}
+                      onClick={() => setActiveTab('signup')}
                     >
                       Sign up
                     </button>
@@ -452,19 +522,33 @@ export default function LoginPage() {
               <div className="mx-auto max-w-3xl">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-2xl">Sign Up for CURE NET</CardTitle>
-                    <CardDescription>Create your account to join the Clinical Unified Research Network</CardDescription>
+                    <CardTitle className="text-2xl">
+                      Sign Up for CURE NET
+                    </CardTitle>
+                    <CardDescription>
+                      Create your account to join the Clinical Unified Research
+                      Network
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button type="button" onClick={fillDummyData} className="mb-6">
+                    <Button
+                      type="button"
+                      onClick={fillDummyData}
+                      className="mb-6"
+                    >
                       Autofill Dummy Data
                     </Button>
 
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-6"
+                      >
                         {/* Account Information */}
                         <div className="space-y-4">
-                          <h3 className="text-lg font-semibold">Account Information</h3>
+                          <h3 className="text-lg font-semibold">
+                            Account Information
+                          </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                               control={form.control}
@@ -473,7 +557,10 @@ export default function LoginPage() {
                                 <FormItem>
                                   <FormLabel>Email</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="name@example.com" {...field} />
+                                    <Input
+                                      placeholder="name@example.com"
+                                      {...field}
+                                    />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -486,7 +573,11 @@ export default function LoginPage() {
                                 <FormItem>
                                   <FormLabel>Password</FormLabel>
                                   <FormControl>
-                                    <Input type="password" placeholder="••••••••" {...field} />
+                                    <Input
+                                      type="password"
+                                      placeholder="••••••••"
+                                      {...field}
+                                    />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -496,10 +587,16 @@ export default function LoginPage() {
                         </div>
 
                         {/* Basic Information */}
-                        <Accordion type="single" collapsible defaultValue="basic-info">
+                        <Accordion
+                          type="single"
+                          collapsible
+                          defaultValue="basic-info"
+                        >
                           <AccordionItem value="basic-info">
                             <AccordionTrigger>
-                              <h3 className="text-lg font-semibold">Basic Information</h3>
+                              <h3 className="text-lg font-semibold">
+                                Basic Information
+                              </h3>
                             </AccordionTrigger>
                             <AccordionContent>
                               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -510,7 +607,10 @@ export default function LoginPage() {
                                     <FormItem>
                                       <FormLabel>Name</FormLabel>
                                       <FormControl>
-                                        <Input placeholder="Full Name" {...field} />
+                                        <Input
+                                          placeholder="Full Name"
+                                          {...field}
+                                        />
                                       </FormControl>
                                       <FormMessage />
                                     </FormItem>
@@ -535,17 +635,28 @@ export default function LoginPage() {
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormLabel>Gender</FormLabel>
-                                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                      <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                      >
                                         <FormControl>
                                           <SelectTrigger>
                                             <SelectValue placeholder="Select gender" />
                                           </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                          <SelectItem value="male">Male</SelectItem>
-                                          <SelectItem value="female">Female</SelectItem>
-                                          <SelectItem value="other">Other</SelectItem>
-                                          <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                                          <SelectItem value="male">
+                                            Male
+                                          </SelectItem>
+                                          <SelectItem value="female">
+                                            Female
+                                          </SelectItem>
+                                          <SelectItem value="other">
+                                            Other
+                                          </SelectItem>
+                                          <SelectItem value="prefer-not-to-say">
+                                            Prefer not to say
+                                          </SelectItem>
                                         </SelectContent>
                                       </Select>
                                       <FormMessage />
@@ -558,11 +669,19 @@ export default function LoginPage() {
                                   render={({ field }) => (
                                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                       <FormControl>
-                                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                        <Checkbox
+                                          checked={field.value}
+                                          onCheckedChange={field.onChange}
+                                        />
                                       </FormControl>
                                       <div className="space-y-1 leading-none">
-                                        <FormLabel>I am under 18 years of age</FormLabel>
-                                        <FormDescription>Parental/guardian consent will be required</FormDescription>
+                                        <FormLabel>
+                                          I am under 18 years of age
+                                        </FormLabel>
+                                        <FormDescription>
+                                          Parental/guardian consent will be
+                                          required
+                                        </FormDescription>
                                       </div>
                                     </FormItem>
                                   )}
@@ -576,13 +695,17 @@ export default function LoginPage() {
                         <Accordion type="single" collapsible>
                           <AccordionItem value="physical-measurements">
                             <AccordionTrigger>
-                              <h3 className="text-lg font-semibold">Physical Measurements</h3>
+                              <h3 className="text-lg font-semibold">
+                                Physical Measurements
+                              </h3>
                             </AccordionTrigger>
                             <AccordionContent>
                               <div className="space-y-6">
                                 {/* Height */}
                                 <div className="space-y-4">
-                                  <h4 className="font-medium">Height Measurements</h4>
+                                  <h4 className="font-medium">
+                                    Height Measurements
+                                  </h4>
                                   {heightFields.map((field, index) => (
                                     <div
                                       key={field.id}
@@ -606,7 +729,10 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
                                             <FormLabel>Date</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -620,9 +746,16 @@ export default function LoginPage() {
                                             <FormLabel>Height (cm)</FormLabel>
                                             <FormControl>
                                               <div className="flex items-center">
-                                                <Input type="number" {...field} />
+                                                <Input
+                                                  type="number"
+                                                  {...field}
+                                                />
                                                 <span className="ml-2 text-sm text-muted-foreground">
-                                                  {cmToFtIn(Number.parseFloat(field.value.toString()) || 0)}
+                                                  {cmToFtIn(
+                                                    Number.parseFloat(
+                                                      field.value.toString()
+                                                    ) || 0
+                                                  )}
                                                 </span>
                                               </div>
                                             </FormControl>
@@ -638,7 +771,12 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendHeight({ date: new Date(), value: 170 })}
+                                    onClick={() =>
+                                      appendHeight({
+                                        date: new Date(),
+                                        value: 170,
+                                      })
+                                    }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Height Measurement
@@ -647,7 +785,9 @@ export default function LoginPage() {
 
                                 {/* Weight */}
                                 <div className="space-y-4">
-                                  <h4 className="font-medium">Weight Measurements</h4>
+                                  <h4 className="font-medium">
+                                    Weight Measurements
+                                  </h4>
                                   {weightFields.map((field, index) => (
                                     <div
                                       key={field.id}
@@ -671,7 +811,10 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
                                             <FormLabel>Date</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -685,9 +828,17 @@ export default function LoginPage() {
                                             <FormLabel>Weight (kg)</FormLabel>
                                             <FormControl>
                                               <div className="flex items-center">
-                                                <Input type="number" {...field} />
+                                                <Input
+                                                  type="number"
+                                                  {...field}
+                                                />
                                                 <span className="ml-2 text-sm text-muted-foreground">
-                                                  {kgToLb(Number.parseFloat(field.value.toString()) || 0)} lb
+                                                  {kgToLb(
+                                                    Number.parseFloat(
+                                                      field.value.toString()
+                                                    ) || 0
+                                                  )}{' '}
+                                                  lb
                                                 </span>
                                               </div>
                                             </FormControl>
@@ -703,7 +854,12 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendWeight({ date: new Date(), value: 70 })}
+                                    onClick={() =>
+                                      appendWeight({
+                                        date: new Date(),
+                                        value: 70,
+                                      })
+                                    }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Weight Measurement
@@ -718,13 +874,17 @@ export default function LoginPage() {
                         <Accordion type="single" collapsible>
                           <AccordionItem value="medical-history">
                             <AccordionTrigger>
-                              <h3 className="text-lg font-semibold">Family & Medical History</h3>
+                              <h3 className="text-lg font-semibold">
+                                Family & Medical History
+                              </h3>
                             </AccordionTrigger>
                             <AccordionContent>
                               <div className="space-y-6">
                                 {/* Family History */}
                                 <div className="space-y-4">
-                                  <h4 className="font-medium">Family History</h4>
+                                  <h4 className="font-medium">
+                                    Family History
+                                  </h4>
                                   {familyHistoryFields.map((field, index) => (
                                     <div
                                       key={field.id}
@@ -735,7 +895,9 @@ export default function LoginPage() {
                                         variant="ghost"
                                         size="sm"
                                         className="absolute top-2 right-2"
-                                        onClick={() => removeFamilyHistory(index)}
+                                        onClick={() =>
+                                          removeFamilyHistory(index)
+                                        }
                                       >
                                         <X className="h-4 w-4" />
                                         <span className="sr-only">Remove</span>
@@ -746,7 +908,9 @@ export default function LoginPage() {
                                         name={`family_history.${index}.disease`}
                                         render={({ field }) => (
                                           <FormItem>
-                                            <FormLabel>Disease/Condition</FormLabel>
+                                            <FormLabel>
+                                              Disease/Condition
+                                            </FormLabel>
                                             <FormControl>
                                               <Input {...field} />
                                             </FormControl>
@@ -776,7 +940,12 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendFamilyHistory({ disease: "", relation: "" })}
+                                    onClick={() =>
+                                      appendFamilyHistory({
+                                        disease: '',
+                                        relation: '',
+                                      })
+                                    }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Family History
@@ -808,9 +977,14 @@ export default function LoginPage() {
                                           name={`heart_rate.${index}.avg`}
                                           render={({ field }) => (
                                             <FormItem>
-                                              <FormLabel>Average (bpm)</FormLabel>
+                                              <FormLabel>
+                                                Average (bpm)
+                                              </FormLabel>
                                               <FormControl>
-                                                <Input type="number" {...field} />
+                                                <Input
+                                                  type="number"
+                                                  {...field}
+                                                />
                                               </FormControl>
                                               <FormMessage />
                                             </FormItem>
@@ -822,9 +996,14 @@ export default function LoginPage() {
                                           name={`heart_rate.${index}.min`}
                                           render={({ field }) => (
                                             <FormItem>
-                                              <FormLabel>Minimum (bpm)</FormLabel>
+                                              <FormLabel>
+                                                Minimum (bpm)
+                                              </FormLabel>
                                               <FormControl>
-                                                <Input type="number" {...field} />
+                                                <Input
+                                                  type="number"
+                                                  {...field}
+                                                />
                                               </FormControl>
                                               <FormMessage />
                                             </FormItem>
@@ -836,9 +1015,14 @@ export default function LoginPage() {
                                           name={`heart_rate.${index}.max`}
                                           render={({ field }) => (
                                             <FormItem>
-                                              <FormLabel>Maximum (bpm)</FormLabel>
+                                              <FormLabel>
+                                                Maximum (bpm)
+                                              </FormLabel>
                                               <FormControl>
-                                                <Input type="number" {...field} />
+                                                <Input
+                                                  type="number"
+                                                  {...field}
+                                                />
                                               </FormControl>
                                               <FormMessage />
                                             </FormItem>
@@ -852,7 +1036,10 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
                                             <FormLabel>Date/Time</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -865,7 +1052,14 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendHeartRate({ avg: 70, min: 60, max: 100, time: new Date() })}
+                                    onClick={() =>
+                                      appendHeartRate({
+                                        avg: 70,
+                                        min: 60,
+                                        max: 100,
+                                        time: new Date(),
+                                      })
+                                    }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Heart Rate Data
@@ -874,7 +1068,9 @@ export default function LoginPage() {
 
                                 {/* Blood Pressure */}
                                 <div className="space-y-4">
-                                  <h4 className="font-medium">Blood Pressure</h4>
+                                  <h4 className="font-medium">
+                                    Blood Pressure
+                                  </h4>
                                   {bloodPressureFields.map((field, index) => (
                                     <div
                                       key={field.id}
@@ -885,7 +1081,9 @@ export default function LoginPage() {
                                         variant="ghost"
                                         size="sm"
                                         className="absolute top-2 right-2"
-                                        onClick={() => removeBloodPressure(index)}
+                                        onClick={() =>
+                                          removeBloodPressure(index)
+                                        }
                                       >
                                         <X className="h-4 w-4" />
                                         <span className="sr-only">Remove</span>
@@ -896,7 +1094,9 @@ export default function LoginPage() {
                                         name={`blood_pressure.${index}.low`}
                                         render={({ field }) => (
                                           <FormItem>
-                                            <FormLabel>Diastolic (mmHg)</FormLabel>
+                                            <FormLabel>
+                                              Diastolic (mmHg)
+                                            </FormLabel>
                                             <FormControl>
                                               <Input type="number" {...field} />
                                             </FormControl>
@@ -910,7 +1110,9 @@ export default function LoginPage() {
                                         name={`blood_pressure.${index}.high`}
                                         render={({ field }) => (
                                           <FormItem>
-                                            <FormLabel>Systolic (mmHg)</FormLabel>
+                                            <FormLabel>
+                                              Systolic (mmHg)
+                                            </FormLabel>
                                             <FormControl>
                                               <Input type="number" {...field} />
                                             </FormControl>
@@ -925,7 +1127,10 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
                                             <FormLabel>Date/Time</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -938,7 +1143,13 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendBloodPressure({ low: 70, high: 120, time: new Date() })}
+                                    onClick={() =>
+                                      appendBloodPressure({
+                                        low: 70,
+                                        high: 120,
+                                        time: new Date(),
+                                      })
+                                    }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Blood Pressure Data
@@ -969,7 +1180,9 @@ export default function LoginPage() {
                                         name={`diagnoses.${index}.disease`}
                                         render={({ field }) => (
                                           <FormItem>
-                                            <FormLabel>Disease/Condition</FormLabel>
+                                            <FormLabel>
+                                              Disease/Condition
+                                            </FormLabel>
                                             <FormControl>
                                               <Input {...field} />
                                             </FormControl>
@@ -1017,7 +1230,13 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendDiagnosis({ disease: "", active: true, severity: "" })}
+                                    onClick={() =>
+                                      appendDiagnosis({
+                                        disease: '',
+                                        active: true,
+                                        severity: '',
+                                      })
+                                    }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Diagnosis
@@ -1037,7 +1256,9 @@ export default function LoginPage() {
                                         variant="ghost"
                                         size="sm"
                                         className="absolute top-2 right-2"
-                                        onClick={() => removeImmunization(index)}
+                                        onClick={() =>
+                                          removeImmunization(index)
+                                        }
                                       >
                                         <X className="h-4 w-4" />
                                         <span className="sr-only">Remove</span>
@@ -1049,7 +1270,10 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
                                             <FormLabel>Date</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -1076,7 +1300,12 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendImmunization({ date: new Date(), vaccine: "" })}
+                                    onClick={() =>
+                                      appendImmunization({
+                                        date: new Date(),
+                                        vaccine: '',
+                                      })
+                                    }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Immunization
@@ -1136,7 +1365,10 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
                                             <FormLabel>Start Date</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -1148,7 +1380,10 @@ export default function LoginPage() {
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
                                             <FormLabel>End Date</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -1156,45 +1391,55 @@ export default function LoginPage() {
 
                                       {/* Side Effects */}
                                       <div className="space-y-4">
-                                        <h4 className="font-medium">Side Effects</h4>
-                                        {sideEffectsFields.map((field, index) => (
-                                          <div
-                                            key={field.id}
-                                            className="grid grid-cols-1 gap-4 p-4 border rounded-md relative"
-                                          >
-                                            <Button
-                                              type="button"
-                                              variant="ghost"
-                                              size="sm"
-                                              className="absolute top-2 right-2"
-                                              onClick={() => removeSideEffect(index)}
+                                        <h4 className="font-medium">
+                                          Side Effects
+                                        </h4>
+                                        {sideEffectsFields.map(
+                                          (field, index) => (
+                                            <div
+                                              key={field.id}
+                                              className="grid grid-cols-1 gap-4 p-4 border rounded-md relative"
                                             >
-                                              <X className="h-4 w-4" />
-                                              <span className="sr-only">Remove</span>
-                                            </Button>
+                                              <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="sm"
+                                                className="absolute top-2 right-2"
+                                                onClick={() =>
+                                                  removeSideEffect(index)
+                                                }
+                                              >
+                                                <X className="h-4 w-4" />
+                                                <span className="sr-only">
+                                                  Remove
+                                                </span>
+                                              </Button>
 
-                                            <FormField
-                                              control={form.control}
-                                              name={`medications.${index}.side_effects`}
-                                              render={({ field }) => (
-                                                <FormItem>
-                                                  <FormLabel>Side Effect</FormLabel>
-                                                  <FormControl>
-                                                    <Input {...field} />
-                                                  </FormControl>
-                                                  <FormMessage />
-                                                </FormItem>
-                                              )}
-                                            />
-                                          </div>
-                                        ))}
+                                              <FormField
+                                                control={form.control}
+                                                name={`medications.${index}.side_effects`}
+                                                render={({ field }) => (
+                                                  <FormItem>
+                                                    <FormLabel>
+                                                      Side Effect
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                      <Input {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                  </FormItem>
+                                                )}
+                                              />
+                                            </div>
+                                          )
+                                        )}
 
                                         <Button
                                           type="button"
                                           variant="outline"
                                           size="sm"
                                           className="mt-2"
-                                          onClick={() => appendSideEffect("")}
+                                          onClick={() => appendSideEffect('')}
                                         >
                                           <Plus className="mr-2 h-4 w-4" />
                                           Add Side Effect
@@ -1210,11 +1455,11 @@ export default function LoginPage() {
                                     className="mt-2"
                                     onClick={() =>
                                       appendMedication({
-                                        medicine: "",
-                                        dosage: "",
+                                        medicine: '',
+                                        dosage: '',
                                         start_date: new Date(),
                                         end_date: null,
-                                        side_effects: [""],
+                                        side_effects: [''],
                                       })
                                     }
                                   >
@@ -1263,7 +1508,7 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendAllergy("")}
+                                    onClick={() => appendAllergy('')}
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Allergy
@@ -1272,50 +1517,65 @@ export default function LoginPage() {
 
                                 {/* Genetic Abnormalities */}
                                 <div className="space-y-4">
-                                  <h4 className="font-medium">Genetic Abnormalities</h4>
-                                  {geneticAbnormalitiesFields.map((field, index) => (
-                                    <div
-                                      key={field.id}
-                                      className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-md relative"
-                                    >
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="sm"
-                                        className="absolute top-2 right-2"
-                                        onClick={() => removeGeneticAbnormality(index)}
+                                  <h4 className="font-medium">
+                                    Genetic Abnormalities
+                                  </h4>
+                                  {geneticAbnormalitiesFields.map(
+                                    (field, index) => (
+                                      <div
+                                        key={field.id}
+                                        className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-md relative"
                                       >
-                                        <X className="h-4 w-4" />
-                                        <span className="sr-only">Remove</span>
-                                      </Button>
+                                        <Button
+                                          type="button"
+                                          variant="ghost"
+                                          size="sm"
+                                          className="absolute top-2 right-2"
+                                          onClick={() =>
+                                            removeGeneticAbnormality(index)
+                                          }
+                                        >
+                                          <X className="h-4 w-4" />
+                                          <span className="sr-only">
+                                            Remove
+                                          </span>
+                                        </Button>
 
-                                      <FormField
-                                        control={form.control}
-                                        name={`genetic_abnormalities.${index}.gene_affected`}
-                                        render={({ field }) => (
-                                          <FormItem>
-                                            <FormLabel>Gene Affected</FormLabel>
-                                            <FormControl>
-                                              <Input {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                          </FormItem>
-                                        )}
-                                      />
+                                        <FormField
+                                          control={form.control}
+                                          name={`genetic_abnormalities.${index}.gene_affected`}
+                                          render={({ field }) => (
+                                            <FormItem>
+                                              <FormLabel>
+                                                Gene Affected
+                                              </FormLabel>
+                                              <FormControl>
+                                                <Input {...field} />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
 
-                                      <FormField
-                                        control={form.control}
-                                        name={`genetic_abnormalities.${index}.date_detected`}
-                                        render={({ field }) => (
-                                          <FormItem className="flex flex-col">
-                                            <FormLabel>Date Detected</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
-                                            <FormMessage />
-                                          </FormItem>
-                                        )}
-                                      />
-                                    </div>
-                                  ))}
+                                        <FormField
+                                          control={form.control}
+                                          name={`genetic_abnormalities.${index}.date_detected`}
+                                          render={({ field }) => (
+                                            <FormItem className="flex flex-col">
+                                              <FormLabel>
+                                                Date Detected
+                                              </FormLabel>
+                                              <DatePicker
+                                                date={field.value}
+                                                setDate={field.onChange}
+                                              />
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                      </div>
+                                    )
+                                  )}
 
                                   <Button
                                     type="button"
@@ -1323,7 +1583,10 @@ export default function LoginPage() {
                                     size="sm"
                                     className="mt-2"
                                     onClick={() =>
-                                      appendGeneticAbnormality({ gene_affected: "", date_detected: new Date() })
+                                      appendGeneticAbnormality({
+                                        gene_affected: '',
+                                        date_detected: new Date(),
+                                      })
                                     }
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
@@ -1333,7 +1596,9 @@ export default function LoginPage() {
 
                                 {/* Participation */}
                                 <div className="space-y-4">
-                                  <h4 className="font-medium">Participation in Studies</h4>
+                                  <h4 className="font-medium">
+                                    Participation in Studies
+                                  </h4>
                                   {participationFields.map((field, index) => (
                                     <div
                                       key={field.id}
@@ -1344,7 +1609,9 @@ export default function LoginPage() {
                                         variant="ghost"
                                         size="sm"
                                         className="absolute top-2 right-2"
-                                        onClick={() => removeParticipation(index)}
+                                        onClick={() =>
+                                          removeParticipation(index)
+                                        }
                                       >
                                         <X className="h-4 w-4" />
                                         <span className="sr-only">Remove</span>
@@ -1369,8 +1636,13 @@ export default function LoginPage() {
                                         name={`participation.${index}.participation_start`}
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
-                                            <FormLabel>Participation Start Date</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <FormLabel>
+                                              Participation Start Date
+                                            </FormLabel>
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -1381,8 +1653,13 @@ export default function LoginPage() {
                                         name={`participation.${index}.participation_end`}
                                         render={({ field }) => (
                                           <FormItem className="flex flex-col">
-                                            <FormLabel>Participation End Date</FormLabel>
-                                            <DatePicker date={field.value} setDate={field.onChange} />
+                                            <FormLabel>
+                                              Participation End Date
+                                            </FormLabel>
+                                            <DatePicker
+                                              date={field.value}
+                                              setDate={field.onChange}
+                                            />
                                             <FormMessage />
                                           </FormItem>
                                         )}
@@ -1390,45 +1667,57 @@ export default function LoginPage() {
 
                                       {/* Matched Criteria */}
                                       <div className="space-y-4">
-                                        <h4 className="font-medium">Matched Criteria</h4>
-                                        {matchedCriteriaFields.map((field, index) => (
-                                          <div
-                                            key={field.id}
-                                            className="grid grid-cols-1 gap-4 p-4 border rounded-md relative"
-                                          >
-                                            <Button
-                                              type="button"
-                                              variant="ghost"
-                                              size="sm"
-                                              className="absolute top-2 right-2"
-                                              onClick={() => removeMatchedCriteria(index)}
+                                        <h4 className="font-medium">
+                                          Matched Criteria
+                                        </h4>
+                                        {matchedCriteriaFields.map(
+                                          (field, index) => (
+                                            <div
+                                              key={field.id}
+                                              className="grid grid-cols-1 gap-4 p-4 border rounded-md relative"
                                             >
-                                              <X className="h-4 w-4" />
-                                              <span className="sr-only">Remove</span>
-                                            </Button>
+                                              <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="sm"
+                                                className="absolute top-2 right-2"
+                                                onClick={() =>
+                                                  removeMatchedCriteria(index)
+                                                }
+                                              >
+                                                <X className="h-4 w-4" />
+                                                <span className="sr-only">
+                                                  Remove
+                                                </span>
+                                              </Button>
 
-                                            <FormField
-                                              control={form.control}
-                                              name={`participation.${index}.matched_criteria`}
-                                              render={({ field }) => (
-                                                <FormItem>
-                                                  <FormLabel>Criteria</FormLabel>
-                                                  <FormControl>
-                                                    <Input {...field} />
-                                                  </FormControl>
-                                                  <FormMessage />
-                                                </FormItem>
-                                              )}
-                                            />
-                                          </div>
-                                        ))}
+                                              <FormField
+                                                control={form.control}
+                                                name={`participation.${index}.matched_criteria`}
+                                                render={({ field }) => (
+                                                  <FormItem>
+                                                    <FormLabel>
+                                                      Criteria
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                      <Input {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                  </FormItem>
+                                                )}
+                                              />
+                                            </div>
+                                          )
+                                        )}
 
                                         <Button
                                           type="button"
                                           variant="outline"
                                           size="sm"
                                           className="mt-2"
-                                          onClick={() => appendMatchedCriteria("")}
+                                          onClick={() =>
+                                            appendMatchedCriteria('')
+                                          }
                                         >
                                           <Plus className="mr-2 h-4 w-4" />
                                           Add Criteria
@@ -1444,10 +1733,10 @@ export default function LoginPage() {
                                     className="mt-2"
                                     onClick={() =>
                                       appendParticipation({
-                                        studyId: "",
+                                        studyId: '',
                                         participation_start: new Date(),
                                         participation_end: new Date(),
-                                        matched_criteria: [""],
+                                        matched_criteria: [''],
                                       })
                                     }
                                   >
@@ -1458,7 +1747,9 @@ export default function LoginPage() {
 
                                 {/* Patient Symptoms */}
                                 <div className="space-y-4">
-                                  <h4 className="font-medium">Patient Symptoms</h4>
+                                  <h4 className="font-medium">
+                                    Patient Symptoms
+                                  </h4>
                                   {patientSymptomsFields.map((field, index) => (
                                     <div
                                       key={field.id}
@@ -1469,7 +1760,9 @@ export default function LoginPage() {
                                         variant="ghost"
                                         size="sm"
                                         className="absolute top-2 right-2"
-                                        onClick={() => removePatientSymptom(index)}
+                                        onClick={() =>
+                                          removePatientSymptom(index)
+                                        }
                                       >
                                         <X className="h-4 w-4" />
                                         <span className="sr-only">Remove</span>
@@ -1496,7 +1789,7 @@ export default function LoginPage() {
                                     variant="outline"
                                     size="sm"
                                     className="mt-2"
-                                    onClick={() => appendPatientSymptom("")}
+                                    onClick={() => appendPatientSymptom('')}
                                   >
                                     <Plus className="mr-2 h-4 w-4" />
                                     Add Symptom
@@ -1511,7 +1804,10 @@ export default function LoginPage() {
                                     <FormItem>
                                       <FormLabel>Patient Feedback</FormLabel>
                                       <FormControl>
-                                        <Input placeholder="Enter feedback" {...field} />
+                                        <Input
+                                          placeholder="Enter feedback"
+                                          {...field}
+                                        />
                                       </FormControl>
                                       <FormMessage />
                                     </FormItem>
@@ -1526,7 +1822,11 @@ export default function LoginPage() {
                                     <FormItem>
                                       <FormLabel>Rating (1-10)</FormLabel>
                                       <FormControl>
-                                        <Input type="number" placeholder="Enter rating" {...field} />
+                                        <Input
+                                          type="number"
+                                          placeholder="Enter rating"
+                                          {...field}
+                                        />
                                       </FormControl>
                                       <FormMessage />
                                     </FormItem>
@@ -1541,7 +1841,10 @@ export default function LoginPage() {
                                     <FormItem>
                                       <FormLabel>Additional Comments</FormLabel>
                                       <FormControl>
-                                        <Input placeholder="Enter comments" {...field} />
+                                        <Input
+                                          placeholder="Enter comments"
+                                          {...field}
+                                        />
                                       </FormControl>
                                       <FormMessage />
                                     </FormItem>
@@ -1552,21 +1855,29 @@ export default function LoginPage() {
                           </AccordionItem>
                         </Accordion>
 
-                        {error && <div className="text-red-500 text-sm py-2">{error}</div>}
+                        {error && (
+                          <div className="text-red-500 text-sm py-2">
+                            {error}
+                          </div>
+                        )}
 
-                        <Button type="submit" className="w-full" disabled={isLoading}>
-                          {isLoading ? "Signing up..." : "Sign Up"}
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? 'Signing up...' : 'Sign Up'}
                         </Button>
                       </form>
                     </Form>
                   </CardContent>
                   <CardFooter>
                     <p className="text-center text-sm text-muted-foreground w-full">
-                      Already have an account?{" "}
+                      Already have an account?{' '}
                       <button
                         type="button"
                         className="text-blue-600 hover:underline"
-                        onClick={() => setActiveTab("login")}
+                        onClick={() => setActiveTab('login')}
                       >
                         Login
                       </button>
@@ -1578,7 +1889,8 @@ export default function LoginPage() {
           </Tabs>
         </div>
       </main>
-    </div>
-  )
-}
 
+      {showSuccess && <SuccessPopup message="Logged in successfully!" />}
+    </div>
+  );
+}

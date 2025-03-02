@@ -9,13 +9,6 @@ import { onAuthStateChanged } from "firebase/auth"
 import { ThemeToggle } from "./theme-provider"
 import { usePathname } from 'next/navigation'
 import { ClinicNavbar } from "./ClinicNavbar"
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
-import { auth } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { ThemeToggle } from './theme-provider';
 import Image from 'next/image';
 
 export function Navbar() {

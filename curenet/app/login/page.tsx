@@ -11,6 +11,7 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useAuthStore } from '@/lib/store';
 
 import { Navbar } from '@/components/navbar';
 import { Button } from '@/components/ui/button';

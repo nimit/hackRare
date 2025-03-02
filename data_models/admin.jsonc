@@ -1,0 +1,33 @@
+{
+    "id": "string", // value of firebase auth token
+    "name": "string",
+    "clinics_managed": [ // list of clinic IDs overseen
+        "string"
+    ],
+    "access_logs": [ // records of significant data access or modifications
+        {
+            "timestamp": "datetime", // when the action was performed
+            "action": "string", // e.g., "update", "view", "delete"
+            "target_record": "string" // identifier of the affected record (e.g., patient_id)
+        }
+    ],
+    "audit_trail": [ // comprehensive audit trail for system operations
+        {
+            "event": "string", // description of the event
+            "timestamp": "datetime" // time the event occurred
+        }
+    ],
+    "hipaa_certification_date": "datetime", // date when HIPAA certification was last confirmed
+    "matching_criteria_overrides": [ // controls for study matching criteria adjustments
+        {
+            "criteria": "string", // description of the criteria
+            "allowed": "bool" // indicates if override is permitted
+        }
+    ]
+}
+//   Responsibilities & Data Access:
+//   Operational Management: Oversee multiple clinics and clinical study operations.
+//   Data Oversight: Access aggregated or de-identified patient data for study matching, and manage patient-study associations.
+//   Audit & Compliance: Maintain comprehensive audit trails for data access and modifications.
+//   System Controls: Adjust study matching criteria and manage permissions for clinic users without accessing full PHI unless necessary.
+//   HIPAA Compliance: Ensure all data handling follows HIPAA guidelines with proper certification dates recorded.

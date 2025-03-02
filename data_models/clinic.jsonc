@@ -1,0 +1,40 @@
+{
+    "id": "string", // Unique identifier for the clinic (e.g., a UUID or Firebase auth token)
+    "clinic_name": "string", // Official name of the clinic
+    "clinic_address": {
+      "street": "string", // Street address
+      "city": "string",
+      "state": "string",
+      "zip_code": "string",
+      "country": "string"
+    },
+    "contact_information": {
+      "phone": "string", // Primary contact number
+      "email": "string"  // Official email address
+    },
+    "authorized_personnel": [
+      {
+        "personnel_id": "string", // Unique identifier for each staff member
+        "name": "string",
+        "role": "string", // e.g., "Principal Investigator", "Study Coordinator"
+        "contact_phone": "string",
+        "contact_email": "string"
+      }
+    ],
+    "clinical_studies": [ "string"], // List of study ids
+    "data_security": {
+      "encryption_method": "string", // e.g., "AES-256"; method used for data encryption per HIPAA guidelines
+      "last_security_audit": "datetime", // Date of the most recent security audit
+      "audit_logs": [
+        {
+          "log_id": "string", // Unique identifier for the log entry
+          "action": "string", // e.g., "data_access", "data_modification"
+          "performed_by": "string", // personnel_id of the person who performed the action
+          "timestamp": "datetime", // When the action occurred
+          "details": "string" // Additional details regarding the action
+        }
+      ]
+    },
+    "additional_comments": ["string"] // Array for any extra notes or remarks related to the clinic record
+  }
+  

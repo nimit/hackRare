@@ -1,0 +1,21 @@
+{
+    "id": "string", // value of firebase auth token
+    "name": "string",
+    "role": "clinic_user", // fixed role identifier
+    "clinic_id": "string", // unique identifier for the clinic
+    "patients_managed": [
+        "string"
+    ], // list of patient ids under their care
+    "login_history": [ // log of user access events for audit
+        {
+            "timestamp": "datetime", // time of login
+            "ip_address": "string" // originating IP address
+        }
+    ],
+    "last_hipaa_training": "datetime" // date of the most recent HIPAA compliance training
+}
+// Responsibilities & Data Access:
+// Direct Patient Care: Access patient clinical data (e.g., vital signs, diagnoses, medications) needed to provide care.
+// Limited PHI Access: View and update patient records within their clinic's domain.
+// Audit & Training: Maintain a record of login history and proof of HIPAA training.
+// Scope: Restricted to the clinic they are affiliated with; cannot modify system settings or view data outside their direct care responsibility.

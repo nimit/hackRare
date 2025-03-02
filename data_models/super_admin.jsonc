@@ -1,0 +1,35 @@
+{
+    "id": "string", // value of firebase auth token
+    "name": "string",
+    "system_settings": { // configuration settings for overall portal operation
+        "maintenance_mode": "bool" // flag to indicate if system is in maintenance mode
+    },
+    "access_logs": [ // detailed logs of actions across all user accounts
+        {
+            "timestamp": "datetime", // when the action occurred
+            "user_id": "string", // ID of the user on whom the action was performed
+            "action": "string" // description of the action taken
+        }
+    ],
+    "full_data_access": "bool", // always true; indicates unrestricted access to PHI and other data
+    "security_keys": [ // list of security credentials/certificates managed by super admin
+        {
+            "key_id": "string", // identifier for the security key
+            "issued_at": "datetime", // date and time the key was issued
+            "expires_at": "datetime" // expiration date/time for the key
+        }
+    ],
+    "compliance_overrides": [ // records of any compliance-related overrides with justification
+        {
+            "field": "string", // the specific data field or setting
+            "override_reason": "string", // rationale for the override
+            "timestamp": "datetime" // when the override was applied
+        }
+    ]
+}
+// Responsibilities & Data Access:
+// Full System Oversight: Complete administrative control over the portal including all user roles, system configurations, and security measures.
+// Unrestricted Data Access: Can view and modify all data (PHI, audit logs, system settings) while still being bound by HIPAA regulations.
+// Security & Audit: Manage system-wide security keys, compliance overrides, and detailed access logs for every operation.
+// Compliance Enforcement: Oversee all HIPAA-related training, certifications, and ensure that all data handling meets regulatory standards.
+// Audit & Monitoring: Maintain high-level audit trails to monitor system usage and detect any unauthorized access.

@@ -61,9 +61,10 @@
       date_detected: datetime,
     },
   ], // can be null
+  approved_trials: string[], // List of approved trials
   participation: [
     {
-      studyId: string,
+      trial_id: string,
       participation_start: string,
       participation_end: string,
       matched_criteria: string[],

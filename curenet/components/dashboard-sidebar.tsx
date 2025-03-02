@@ -21,12 +21,14 @@ import {
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { PatientProfile } from '@/lib/firestore';
 
 interface DashboardSidebarProps {
+  profile?: PatientProfile,
   activePage?: string;
 }
 
-export function DashboardSidebar({ activePage }: DashboardSidebarProps) {
+export function DashboardSidebar({ profile, activePage }: DashboardSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   const menuItems = [

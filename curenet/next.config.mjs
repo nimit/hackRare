@@ -1,12 +1,18 @@
-let userConfig = undefined
-try {
-  userConfig = await import('./v0-user-next.config')
-} catch (e) {
-  // ignore error
-}
+// let userConfig = undefined
+// try {
+//   userConfig = await import('./v0-user-next.config')
+// } catch (e) {
+//   // ignore error
+// }
+
+// const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  // assetPrefix: isProd ? '/hackRare/' : '',
+  // basePath: isProd ? '/hackRare' : '',
+  // output: 'export',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -23,26 +29,26 @@ const nextConfig = {
   },
 }
 
-mergeConfig(nextConfig, userConfig)
+// mergeConfig(nextConfig, userConfig)
 
-function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) {
-    return
-  }
+// function mergeConfig(nextConfig, userConfig) {
+//   if (!userConfig) {
+//     return
+//   }
 
-  for (const key in userConfig) {
-    if (
-      typeof nextConfig[key] === 'object' &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...userConfig[key],
-      }
-    } else {
-      nextConfig[key] = userConfig[key]
-    }
-  }
-}
+//   for (const key in userConfig) {
+//     if (
+//       typeof nextConfig[key] === 'object' &&
+//       !Array.isArray(nextConfig[key])
+//     ) {
+//       nextConfig[key] = {
+//         ...nextConfig[key],
+//         ...userConfig[key],
+//       }
+//     } else {
+//       nextConfig[key] = userConfig[key]
+//     }
+//   }
+// }
 
 export default nextConfig

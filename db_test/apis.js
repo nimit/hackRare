@@ -145,6 +145,6 @@ window.signout = signout;
 window.insertPatient = insertPatient;
 window.insertTrial = insertTrial;
 signin()
-insertClinic()
+// insertClinic()
 insertClinicUser()
 console.log("Added to window");

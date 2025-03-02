@@ -236,7 +236,7 @@ const clinicData = JSON.parse(`{
 `, reviveDate);
 
 const clinicUserData = JSON.parse(`{
-    "user_id": "PCDp0Co7bOL9yiohLHtG",
+    "user_id": "QM1S4tjLsrSGGi6N9CgRg4PhvaE2",
     "name": "Jane Doe",
     "role": "study_coordinator",
     "clinic_id": "XhzBW3QNfKphczfxYm17",

@@ -24,11 +24,14 @@ import { Badge } from '@/components/ui/badge';
 import { PatientProfile } from '@/lib/firestore';
 
 interface DashboardSidebarProps {
-  profile?: PatientProfile,
+  profile?: PatientProfile;
   activePage?: string;
 }
 
-export function DashboardSidebar({ profile, activePage }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  profile,
+  activePage,
+}: DashboardSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   const menuItems = [
@@ -64,11 +67,11 @@ export function DashboardSidebar({ profile, activePage }: DashboardSidebarProps)
     },
   ];
 
-  const bottomMenuItems = [
-    { name: 'Settings', icon: <Settings size={20} />, path: '/settings' },
-    { name: 'Help', icon: <HelpCircle size={20} />, path: '/help' },
-    { name: 'Logout', icon: <LogOut size={20} />, path: '/logout' },
-  ];
+  // const bottomMenuItems = [
+  //   { name: 'Settings', icon: <Settings size={20} />, path: '/settings' },
+  //   { name: 'Help', icon: <HelpCircle size={20} />, path: '/help' },
+  //   { name: 'Logout', icon: <LogOut size={20} />, path: '/logout' },
+  // ];
 
   return (
     <motion.div
@@ -169,7 +172,7 @@ export function DashboardSidebar({ profile, activePage }: DashboardSidebarProps)
         </nav>
       </div>
 
-      {/* Bottom menu */}
+      {/* Bottom menu
       <div className="border-t border-gray-200 dark:border-gray-700 py-4 px-2">
         <nav className="space-y-1">
           {bottomMenuItems.map((item) => (
@@ -200,7 +203,7 @@ export function DashboardSidebar({ profile, activePage }: DashboardSidebarProps)
             </Link>
           ))}
         </nav>
-      </div>
+      </div> */}
     </motion.div>
   );
 }

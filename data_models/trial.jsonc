@@ -1,0 +1,58 @@
+{
+    NCTID: string, // required id to interface with national databases
+    trial_id: string, // unique identifier for the clinical trial (e.g., auto-generated UUID)
+    phase: string, // clinical trial phase (e.g., "Phase I", "Phase II", "Phase III", "Phase IV")
+    title: string, // title of the clinical trial
+    brief_summary: string, // a brief summary of the trial
+    drug: string, // specific drug administered (or any detail related to it)
+    description: string, // detailed description of the trial objectives and methodology
+    disease_targeted: string, // specific rare disease or condition being studied
+    inclusion_criteria: [ // criteria required for patient enrollment
+      {
+        criterion: string, // description of an inclusion criterion
+      },
+    ],
+    exclusion_criteria: [ // criteria that disqualify patient enrollment
+      {
+        criterion: string, // description of an exclusion criterion
+      },
+    ],
+    enrollment_capacity: number, // maximum number of participants allowed in the trial
+    sponsor: string, // name of the organization sponsoring the trial
+    locations: [ // study site details
+      {
+        location_id: string, // unique identifier for the study site
+        address: string, // street address of the study site
+        city: string,
+        state: string,
+        country: string,
+      },
+    ],
+    start_date: datetime, // trial start date (ISO 8601 format recommended)
+    end_date: datetime, // trial end date or projected completion date
+    status: string, // current status (e.g., "recruiting", "active", "completed", "terminated")
+    contact_info: { // details for trial inquiries (ensuring secure handling per HIPAA)
+      phone: string,
+      email: string,
+      website: string,
+    },
+    data_security_details: string, // summary of security measures (e.g., encryption, access controls) per HIPAA guidelines
+    study_results: [ // records of trial outcomes and interim analyses
+      {
+        date: datetime, // date when results were recorded
+        result_summary: string, // concise summary of study findings
+        outcome: string, // description of the outcome (e.g., "positive", "negative", "inconclusive")
+      },
+    ],
+    adverse_events: [ // logged adverse events during the trial
+      {
+        date: datetime, // date of the adverse event
+        event_description: string, // detailed description of the adverse event
+        severity: string, // severity level (e.g., "mild", "moderate", "severe")
+      },
+    ],
+    created_at: datetime, // timestamp when the trial record was created
+    updated_at: datetime, // timestamp when the trial record was last updated
+    additional_comments: string[], // list of additional remarks or notes regarding the trial
+    matching_criteria: string[], // list of specific criteria used to match participants (e.g., genetic markers, symptom profiles)
+  }  

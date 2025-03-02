@@ -1,5 +1,6 @@
 {
-    id: string, // value of firebase auth token
+    user_id: string, // value of firebase auth token
+    name: string,
     age: string,
     gender: string,
     height: [

@@ -6,7 +6,8 @@ function reviveDate(_, value) {
 }
 
 const patientData = JSON.parse(`{
-    "id": "toFwUumWAcUcvFsQ0JxNlYHONgD3",
+    "user_id": "toFwUumWAcUcvFsQ0JxNlYHONgD3",
+    "name": "Ashley",
     "age": 34,
     "gender": "female",
     "height": [

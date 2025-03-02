@@ -17,6 +17,8 @@ concurrency:
 
 jobs:
   create-env:
+    environment:
+      name: master_deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

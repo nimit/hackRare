@@ -99,11 +99,11 @@ export default function ClinicLoginPage() {
   }
   
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
+    <div className="flex items-center justify-center min-h-screen bg-background text-foreground">
+      <Card className="w-full max-w-md bg-card text-card-foreground border-border">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Clinical Portal Login</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-muted-foreground">
             Enter your credentials to access the clinical studies portal
           </CardDescription>
         </CardHeader>
@@ -144,7 +144,11 @@ export default function ClinicLoginPage() {
                 )}
               />
               
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button 
+                type="submit" 
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
+                disabled={loading}
+              >
                 {loading ? 'Logging in...' : 'Login'}
               </Button>
             </form>
@@ -152,7 +156,7 @@ export default function ClinicLoginPage() {
         </CardContent>
         <Separator />
         <CardFooter className="flex justify-center pt-4">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             Secure access to clinical studies - HIPAA Compliant
           </p>
         </CardFooter>

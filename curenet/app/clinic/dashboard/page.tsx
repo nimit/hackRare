@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/lib/clinic_store'
 import { firestore, PatientProfile } from '@/lib/firestore'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { ClinicNavbar } from '@/components/ClinicNavbar'
+import { Search, Bell, Clipboard, Activity, Calendar, Pill, AlertCircle, FileText } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function ClinicDashboardPage() {
   const { profile, clinic } = useAuthStore()
@@ -29,14 +30,6 @@ export default function ClinicDashboardPage() {
     fetchPatients()
   }, [profile])
   
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    )
-  }
-  
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -47,149 +40,343 @@ export default function ClinicDashboardPage() {
   }
   
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Clinical Portal Dashboard</h1>
-          <p className="text-gray-500">Welcome, {profile?.name || 'User'}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Avatar className="h-10 w-10">
-            <AvatarFallback>{profile?.name ? getInitials(profile.name) : 'CU'}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="text-lg font-medium">{clinic?.clinic_name || 'Clinic'}</p>
-            <div className="text-sm text-gray-500">
-              <Badge variant="outline" className="mr-1">{profile?.role || 'Staff'}</Badge>
+    <div className="flex flex-col min-h-screen bg-background">
+      
+      <div className="flex-1 flex">
+        {/* Main content */}
+        <main className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900">
+          {/* Header */}
+          <motion.header
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white dark:bg-gray-800 shadow-sm p-4 flex justify-between items-center"
+          >
+            <h1 className="text-2xl font-bold">Clinical Portal Dashboard</h1>
+
+            <div className="flex items-center space-x-4">
+              <div className="relative hidden md:block">
+                <Search
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={18}
+                />
+                <Input
+                  placeholder="Search patients..."
+                  className="pl-10 w-64 bg-gray-100 dark:bg-gray-700 border-none"
+                />
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative p-2 rounded-full bg-gray-100 dark:bg-gray-700"
+              >
+                <Bell size={20} />
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+              </motion.button>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center space-x-2 cursor-pointer"
+              >
+                <Avatar>
+                  <AvatarFallback>{profile?.name ? getInitials(profile.name) : 'CU'}</AvatarFallback>
+                </Avatar>
+                <span className="hidden md:block font-medium">{profile?.name || 'User'}</span>
+              </motion.div>
             </div>
-          </div>
-        </div>
-      </div>
-      
-      <Separator />
-      
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full md:w-auto grid-cols-3 h-auto">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="patients">Patients</TabsTrigger>
-          <TabsTrigger value="studies">Clinical Studies</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="overview" className="space-y-4 mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Managed Patients</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{patients.length}</div>
-                <p className="text-xs text-muted-foreground">
-                  {patients.length === 1 ? 'Patient' : 'Patients'} under your care
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Active Studies</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{clinic?.clinical_studies?.length || 0}</div>
-                <p className="text-xs text-muted-foreground">
-                  {clinic?.clinical_studies?.length === 1 ? 'Study' : 'Studies'} in progress
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">HIPAA Compliance</CardTitle>
-              </CardHeader>
-              <CardContent>
-                  <div>
-                <span className="text-md font-md text-slate-200">
-                  {profile?.lastHipaaTraining ? 
-                    `${profile.lastHipaaTraining.toLocaleString('default', {month: 'long'})} ${profile.lastHipaaTraining.getDate()},` : 
-                    'Not available'} </span>
-                <span className="text-sm font-small text-slate-500">
-                  {profile?.lastHipaaTraining ? 
-                    profile.lastHipaaTraining.getFullYear() : 
-                    'Not available'} </span>
-                </div>
-                <p className="text-xs text-muted-foreground">Last training date</p>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="patients" className="space-y-4 mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Managed Patients</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {patients.length === 0 ? (
-                <div className="text-center py-6 text-gray-500">
-                  No patients are currently assigned to you
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Age</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {patients.map((patient, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{patient.name}</TableCell>
-                        <TableCell>{patient.age}</TableCell>
-                        <TableCell>{patient.email}</TableCell>
-                        <TableCell>
-                          <Badge>{'Active'}</Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="studies" className="space-y-4 mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Clinical Studies</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {!clinic?.clinical_studies?.length ? (
-                <div className="text-center py-6 text-gray-500">
-                  No clinical studies are currently active
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {clinic.clinical_studies.map((studyId: string, index: number) => (
-                    <Card key={index} className="overflow-hidden">
-                      <CardHeader className="bg-gray-50 pb-2">
-                        <CardTitle className="text-md">Study ID: {studyId}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-4">
-                        <p className="text-sm text-gray-500">
-                          Study details will appear here
+          </motion.header>
+
+          <div className="container mx-auto py-6 px-4">
+            {loading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                {/* Status Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                  <motion.div
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
+                  >
+                    <div className="flex items-center">
+                      <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
+                        <Clipboard className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Managed Patients
+                        </h3>
+                        <p className="text-2xl font-bold">{patients.length}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
+                  >
+                    <div className="flex items-center">
+                      <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
+                        <Activity className="h-6 w-6 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Active Studies
+                        </h3>
+                        <p className="text-2xl font-bold">{clinic?.clinical_studies?.length || 0}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
+                  >
+                    <div className="flex items-center">
+                      <div className="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-full">
+                        <Calendar className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Appointments
+                        </h3>
+                        <p className="text-2xl font-bold">0</p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
+                  >
+                    <div className="flex items-center">
+                      <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-full">
+                        <Pill className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <div className="ml-4">
+                        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          HIPAA Training
+                        </h3>
+                        <p className="text-2xl font-bold">
+                          {profile?.lastHipaaTraining ? 
+                            profile.lastHipaaTraining.getFullYear() : 
+                            'N/A'}
                         </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Main Content Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Left Column */}
+                  <div className="lg:col-span-2 space-y-6">
+                    <Card className="bg-white dark:bg-gray-800 shadow-sm border-gray-100 dark:border-gray-700">
+                      <CardHeader>
+                        <CardTitle>Your Managed Patients</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          {patients.length === 0 ? (
+                            <div className="text-center py-6 text-gray-500 dark:text-gray-400">
+                              No patients are currently assigned to you
+                            </div>
+                          ) : (
+                            patients.map((patient, index) => (
+                              <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-gray-700"
+                              >
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <h3 className="font-medium">
+                                      {patient.name}
+                                    </h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                      {patient.email}
+                                    </p>
+                                  </div>
+                                  <div className="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-sm font-medium px-2 py-1 rounded">
+                                    Active
+                                  </div>
+                                </div>
+                                <div className="flex justify-between items-center mt-4">
+                                  <span className="text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded">
+                                    Age: {patient.age}
+                                  </span>
+                                  <Button size="sm" variant="outline">
+                                    View Details
+                                  </Button>
+                                </div>
+                              </motion.div>
+                            ))
+                          )}
+                        </div>
+                        <div className="mt-4 text-center">
+                          <Button variant="outline">
+                            View All Patients
+                          </Button>
+                        </div>
                       </CardContent>
                     </Card>
-                  ))}
+
+                    <Card className="bg-white dark:bg-gray-800 shadow-sm border-gray-100 dark:border-gray-700">
+                      <CardHeader>
+                        <CardTitle>Clinical Studies</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        {!clinic?.clinical_studies?.length ? (
+                          <div className="text-center py-6 text-gray-500 dark:text-gray-400">
+                            No clinical studies are currently active
+                          </div>
+                        ) : (
+                          <div className="space-y-4">
+                            {clinic.clinical_studies.map((studyId: string, index: number) => (
+                              <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-gray-700"
+                              >
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <h3 className="font-medium">
+                                      Study ID: {studyId}
+                                    </h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                      Study details will appear here
+                                    </p>
+                                  </div>
+                                  <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-medium px-2 py-1 rounded">
+                                    Active
+                                  </div>
+                                </div>
+                                <div className="flex justify-between items-center mt-4">
+                                  <span className="text-sm bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 px-2 py-1 rounded">
+                                    Phase 2
+                                  </span>
+                                  <Button size="sm" variant="outline">
+                                    View Details
+                                  </Button>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        )}
+                        <div className="mt-4 text-center">
+                          <Button variant="outline">
+                            Add New Study
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Right Column */}
+                  <div className="space-y-6">
+                    <Card className="bg-white dark:bg-gray-800 shadow-sm border-gray-100 dark:border-gray-700">
+                      <CardHeader>
+                        <CardTitle>Clinic Information</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-center">
+                            <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full mr-3">
+                              <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">
+                                Clinic Name
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                {clinic?.clinic_name || 'Not available'}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-full mr-3">
+                              <FileText className="h-4 w-4 text-green-600 dark:text-green-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">
+                                Your Role
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                {profile?.role || 'Staff'}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="bg-white dark:bg-gray-800 shadow-sm border-gray-100 dark:border-gray-700">
+                      <CardHeader>
+                        <CardTitle>Compliance Reminders</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="flex items-start">
+                            <div className="bg-red-100 dark:bg-red-900/30 p-2 rounded-full mr-3">
+                              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">
+                                HIPAA Training Renewal
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                {profile?.lastHipaaTraining ? 
+                                  `Last completed: ${profile.lastHipaaTraining.toLocaleString('default', {month: 'long'})} ${profile.lastHipaaTraining.getFullYear()}` : 
+                                  'Not completed'}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start">
+                            <div className="bg-yellow-100 dark:bg-yellow-900/30 p-2 rounded-full mr-3">
+                              <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">
+                                Patient Data Review
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Due in 14 days
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-start">
+                            <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full mr-3">
+                              <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">
+                                Study Protocol Review
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Due in 30 days
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              </motion.div>
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   )
 }

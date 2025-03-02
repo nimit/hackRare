@@ -425,17 +425,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Loading overlay */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-white/90 dark:bg-gray-950/90 z-50 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-50"></div>
-        </div>
-      )}
-
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* <Navbar /> */}
 
-      <main className="flex-grow py-12 bg-gray-50">
+      <main className="flex-grow py-12 bg-background">
         <div className="container mx-auto px-4 py-12">
           <Tabs
             defaultValue="login"
@@ -444,10 +437,10 @@ export default function LoginPage() {
           >
             {/* Login Tab */}
             <TabsContent value="login">
-              <Card className="mx-auto max-w-md">
+              <Card className="mx-auto max-w-md bg-card text-card-foreground border-border">
                 <CardHeader>
-                  <CardTitle className="text-2xl">Login to CURE NET</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-2xl font-bold">Login to CURE NET</CardTitle>
+                  <CardDescription className="text-muted-foreground">
                     Enter your credentials to access your account
                   </CardDescription>
                 </CardHeader>
@@ -496,7 +489,7 @@ export default function LoginPage() {
 
                     <Button
                       type="submit"
-                      className="w-full"
+                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                       disabled={isLoading}
                     >
                       {isLoading ? 'Logging in...' : 'Login'}
@@ -508,7 +501,7 @@ export default function LoginPage() {
                     Don't have an account?{' '}
                     <button
                       type="button"
-                      className="text-blue-500 hover:underline"
+                      className="text-primary hover:underline"
                       onClick={() => setActiveTab('signup')}
                     >
                       Sign up
@@ -1864,7 +1857,7 @@ export default function LoginPage() {
 
                         <Button
                           type="submit"
-                          className="w-full"
+                          className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                           disabled={isLoading}
                         >
                           {isLoading ? 'Signing up...' : 'Sign Up'}
@@ -1877,7 +1870,7 @@ export default function LoginPage() {
                       Already have an account?{' '}
                       <button
                         type="button"
-                        className="text-blue-500 hover:underline"
+                        className="text-primary hover:underline"
                         onClick={() => setActiveTab('login')}
                       >
                         Login

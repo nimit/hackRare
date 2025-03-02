@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuthStore } from "@/lib/clinic_store";
@@ -15,20 +15,37 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { LogOut, Home, CirclePlusIcon } from "lucide-react";
+import { LogOut, Home, CirclePlusIcon, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
-export function ClinicNavbar({ isLoggedIn: isLoggedIn }) {
+export function ClinicNavbar() {
   const pathname = usePathname();
-  const { clearAuth } = useAuthStore();
+  const router = useRouter();
+  const { user, clearAuth } = useAuthStore();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
+  // Ensure theme component only renders after mounting to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
       clearAuth();
+      router.push("/clinic/login");
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const isLoggedIn = !!user;
 
   return (
     <div className="border-b">
@@ -39,7 +56,7 @@ export function ClinicNavbar({ isLoggedIn: isLoggedIn }) {
           </Link>
         </div>
 
-        {isLoggedIn ? (
+        {isLoggedIn && (
           <NavigationMenu className="mx-6">
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -57,7 +74,7 @@ export function ClinicNavbar({ isLoggedIn: isLoggedIn }) {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/clinic/patients" legacyBehavior passHref>
+                <Link href="/clinic/newtrial" legacyBehavior passHref>
                   <NavigationMenuLink
                     className={cn(
                       navigationMenuTriggerStyle(),
@@ -72,60 +89,26 @@ export function ClinicNavbar({ isLoggedIn: isLoggedIn }) {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-        ) : (
-          <></>
         )}
 
-        {/* {
-          isLoggedIn ?
-            (<NavigationMenu className="mx-6">
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <Link href="/clinic/dashboard" legacyBehavior passHref>
-                    <NavigationMenuLink className={cn(
-                      navigationMenuTriggerStyle(),
-                      pathname === '/clinic/dashboard' && "bg-accent text-accent-foreground"
-                    )}>
-                      <Home className="mr-2 h-4 w-4" />
-                      Dashboard
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link href="/clinic/patients" legacyBehavior passHref>
-                    <NavigationMenuLink className={cn(
-                      navigationMenuTriggerStyle(),
-                      pathname === '/clinic/patients' && "bg-accent text-accent-foreground"
-                    )}>
-                      <Users className="mr-2 h-4 w-4" />
-                      Patients
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link href="/clinic/studies" legacyBehavior passHref>
-                    <NavigationMenuLink className={cn(
-                      navigationMenuTriggerStyle(),
-                      pathname === '/clinic/studies' && "bg-accent text-accent-foreground"
-                    )}>
-                      <ClipboardList className="mr-2 h-4 w-4" />
-                      Studies
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>) : (<></>)} */}
-
-        {isLoggedIn ? (
-          <div className="ml-auto flex items-center">
+        <div className="ml-auto flex items-center gap-2">
+          {mounted && (
+            <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </Button>
+          )}
+          
+          {isLoggedIn && (
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               Logout
             </Button>
-          </div>
-        ) : (
-          <></>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

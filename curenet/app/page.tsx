@@ -67,16 +67,16 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* <Navbar /> */}
 
-      <main className="flex-grow">
+      <div className="flex-grow">
         {/* Hero Section */}
         <section
           ref={sectionRef}
-          className="relative overflow-hidden bg-gray-100 dark:bg-gray-800 h-[64vh] min-h-[500px] pt-20"
+          className="relative overflow-hidden bg-gray-100 dark:bg-gray-800 h-[64vh] min-h-[500px] pt-20 w-full"
         >
           {/* <div className="absolute inset-0 bg-grid-gray-300/50 [mask-image:linear-gradient(0deg,white,transparent)] dark:bg-grid-gray-700/50"></div> */}
 
           {/* Container for all elements */}
-          <div className="container relative h-full mx-auto px-4">
+          <div className="relative h-full w-full px-4">
             {/* Left Image Container */}
             <div className="hidden lg:block absolute left-0 bottom-0 w-[400px] h-[400px]">
               <img
@@ -90,7 +90,7 @@ export default function Home() {
             {/* Center Content */}
             <div
               className="absolute inset-0 flex flex-col items-center justify-center text-center max-w-2xl mx-auto p-4 
-  bg-white/50 dark:bg-black/10 backdrop-blur-md"
+  bg-white/50 dark:bg-black/10 backdrop-blur-md z-10"
             >
               <h1 className="text-3xl font-bold tracking-tight sm:text-5xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
                 Connecting Rare Disease Patients to Clinical Trials
@@ -406,7 +406,7 @@ export default function Home() {
             )}
           </div>
         </section>
-      </main>
+      </div>
 
       <Footer />
     </div>

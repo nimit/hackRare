@@ -43,9 +43,9 @@ export function DashboardSidebar({ activePage }: DashboardSidebarProps) {
       badge: '12',
     },
     {
-      name: 'My Applications',
+      name: 'Add Documents',
       icon: <FileText size={20} />,
-      path: '/applications',
+      path: '/documents/upload',
       badge: null,
     },
     {
@@ -55,15 +55,9 @@ export function DashboardSidebar({ activePage }: DashboardSidebarProps) {
       badge: '2',
     },
     {
-      name: 'Medications',
-      icon: <Pill size={20} />,
-      path: '/medications',
-      badge: null,
-    },
-    {
-      name: 'Messages',
-      icon: <MessageSquare size={20} />,
-      path: '/messages',
+      name: 'Report Event',
+      icon: <FileText size={20} />,
+      path: '/report',
       badge: '3',
     },
   ];
@@ -152,7 +146,7 @@ export function DashboardSidebar({ activePage }: DashboardSidebarProps) {
                     <span className="ml-3 flex-1">{item.name}</span>
                   )}
 
-                  {!collapsed && item.badge && (
+                  {/* {!collapsed && item.badge && (
                     <Badge
                       variant="outline"
                       className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800"
@@ -165,7 +159,7 @@ export function DashboardSidebar({ activePage }: DashboardSidebarProps) {
                     <Badge className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 h-4 w-4 p-0 flex items-center justify-center bg-blue-500 text-[10px]">
                       {item.badge}
                     </Badge>
-                  )}
+                  )} */}
                 </div>
               </motion.div>
             </Link>

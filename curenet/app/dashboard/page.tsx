@@ -31,6 +31,7 @@ import {
   LineElement,
   Title,
 } from 'chart.js';
+import Link from 'next/link';
 
 // Register ChartJS components
 ChartJS.register(
@@ -366,9 +367,14 @@ export default function DashboardPage() {
                             ))}
                           </div>
                           <div className="mt-4 text-center">
-                            <Button variant="outline">
-                              Schedule New Appointment
-                            </Button>
+                            <Link
+                              href="/appointments"
+                              className="text-blue-600 dark:text-blue-400"
+                            >
+                              <Button variant="outline">
+                                Schedule New Appointment
+                              </Button>
+                            </Link>
                           </div>
                         </CardContent>
                       </Card>

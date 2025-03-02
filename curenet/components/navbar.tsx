@@ -7,6 +7,8 @@ import { Menu, X } from "lucide-react"
 import { auth } from "@/lib/firebase"
 import { onAuthStateChanged } from "firebase/auth"
 import { ThemeToggle } from "./theme-provider"
+import { usePathname } from 'next/navigation'
+import { ClinicNavbar } from "./ClinicNavbar"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -22,6 +24,11 @@ export function Navbar() {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
+  }
+
+  let pathName = usePathname()
+  if (pathName.startsWith('/clinic')) {
+    return <ClinicNavbar isLoggedIn={isLoggedIn} />;
   }
 
   return (
@@ -47,7 +54,7 @@ export function Navbar() {
               <Button asChild onClick={() => auth.signOut()} variant="default">
                 <Link href="/login">Sign Out</Link>
               </Button>
-            ) : (
+            ) : pathName.endsWith('login') ? (<></>) : (
               <Button asChild variant="default">
                 <Link href="/login">Login / Signup</Link>
               </Button>

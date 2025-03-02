@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { User } from 'firebase/auth'
-import type { PatientProfile } from './firebase-service.ts'
+import type { PatientProfile } from './firestore.ts'
 
 interface AuthState {
   user: User | null

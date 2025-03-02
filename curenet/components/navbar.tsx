@@ -1,14 +1,14 @@
 'use client';
 
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
-import { auth } from "@/lib/firebase"
-import { onAuthStateChanged } from "firebase/auth"
-import { ThemeToggle } from "./theme-provider"
-import { usePathname } from 'next/navigation'
-import { ClinicNavbar } from "./ClinicNavbar"
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { ThemeToggle } from './theme-provider';
+import { usePathname } from 'next/navigation';
+import { ClinicNavbar } from './ClinicNavbar';
 import Image from 'next/image';
 
 export function Navbar() {
@@ -24,16 +24,16 @@ export function Navbar() {
   }, []);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
-  let pathName = usePathname()
+  let pathName = usePathname();
   if (pathName.startsWith('/clinic')) {
     return <ClinicNavbar isLoggedIn={isLoggedIn} />;
   }
 
   return (
-    <nav className="w-full bg-background border-b border-border shadow-sm">
+    <nav className="w-full bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -62,29 +62,38 @@ export function Navbar() {
           <div className="hidden md:flex items-center space-x-6">
             <Link
               href="/about"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               About
             </Link>
             <Link
               href="/privacy"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               href="/contact"
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               Contact
             </Link>
             <ThemeToggle />
             {isLoggedIn ? (
-              <Button asChild onClick={() => auth.signOut()} variant="default">
+              <Button
+                asChild
+                onClick={() => auth.signOut()}
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white"
+              >
                 <Link href="/login">Sign Out</Link>
               </Button>
-            ) : pathName.endsWith('login') ? (<></>) : (
-              <Button asChild variant="default">
+            ) : pathName.endsWith('login') ? (
+              <></>
+            ) : (
+              <Button
+                asChild
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white"
+              >
                 <Link href="/login">Login / Signup</Link>
               </Button>
             )}
@@ -95,7 +104,7 @@ export function Navbar() {
             <ThemeToggle />
             <button
               onClick={toggleMenu}
-              className="text-muted-foreground hover:text-foreground focus:outline-none"
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none"
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -109,21 +118,21 @@ export function Navbar() {
             <div className="flex flex-col space-y-4">
               <Link
                 href="/about"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 About
               </Link>
               <Link
                 href="/privacy"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 Privacy Policy
               </Link>
               <Link
                 href="/contact"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 Contact
@@ -131,8 +140,7 @@ export function Navbar() {
               {isLoggedIn ? (
                 <Button
                   asChild
-                  variant="default"
-                  className="w-full mt-2"
+                  className="w-full mt-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white"
                   onClick={() => {
                     auth.signOut();
                     setIsOpen(false);
@@ -143,8 +151,7 @@ export function Navbar() {
               ) : (
                 <Button
                   asChild
-                  variant="default"
-                  className="w-full mt-2"
+                  className="w-full mt-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   <Link href="/login">Login / Signup</Link>

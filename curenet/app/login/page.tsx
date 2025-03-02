@@ -469,7 +469,7 @@ export default function LoginPage() {
                         <Label htmlFor="password">Password</Label>
                         <a
                           href="#"
-                          className="text-sm text-blue-600 hover:underline"
+                          className="text-sm text-blue-500 hover:underline"
                           onClick={(e) => {
                             e.preventDefault();
                             alert(
@@ -508,7 +508,7 @@ export default function LoginPage() {
                     Don't have an account?{' '}
                     <button
                       type="button"
-                      className="text-blue-600 hover:underline"
+                      className="text-blue-500 hover:underline"
                       onClick={() => setActiveTab('signup')}
                     >
                       Sign up
@@ -1201,7 +1201,7 @@ export default function LoginPage() {
                                             <FormControl>
                                               <input
                                                 type="checkbox"
-                                                className="h-4 w-4 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                                                className="h-4 w-4 border border-gray-300 rounded focus:ring-2 focus:ring-blue-400"
                                                 {...field}
                                               />
                                             </FormControl>
@@ -1877,7 +1877,7 @@ export default function LoginPage() {
                       Already have an account?{' '}
                       <button
                         type="button"
-                        className="text-blue-600 hover:underline"
+                        className="text-blue-500 hover:underline"
                         onClick={() => setActiveTab('login')}
                       >
                         Login

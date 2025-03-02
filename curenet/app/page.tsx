@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import { ClipboardList, Users, FlaskRoundIcon as Flask, Shield, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { auth } from "@/lib/firebase"
 import { onAuthStateChanged } from "firebase/auth"

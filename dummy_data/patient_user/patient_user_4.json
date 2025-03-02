@@ -3,6 +3,7 @@
     "name": "Sheela",
     "age": 29,
     "gender": "female",
+    "has_guardian": false,
     "height": [
       {
         "date": "2023-03-01T12:00:00Z",

@@ -1,0 +1,74 @@
+{
+    "NCTID": "NCT00543210",
+    "trial_id": "gYvAzyT6w0P6E9eTwINS",
+    "phase": "Phase III",
+    "title": "Double-blind Study of 3,4-Diaminopyridine in Lambert-Eaton Myasthenic Syndrome",
+    "brief_summary": "Evaluating the efficacy of 3,4-Diaminopyridine in improving neuromuscular transmission in LEMS patients.",
+    "drug": "3,4-Diaminopyridine",
+    "description": "This trial focuses on assessing the improvement in muscle strength and reduction in fatigue among patients with Lambert-Eaton Myasthenic Syndrome through administration of 3,4-Diaminopyridine.",
+    "disease_targeted": "Lambert-Eaton Myasthenic Syndrome",
+    "inclusion_criteria": [
+      { "criterion": "Confirmed diagnosis of LEMS." },
+      { "criterion": "Aged 18 and older." }
+    ],
+    "exclusion_criteria": [
+      { "criterion": "History of cardiac arrhythmia." },
+      { "criterion": "Recent use of immunosuppressive drugs." }
+    ],
+    "enrollment_capacity": 100,
+    "sponsor": "Neuromuscular Research Group",
+    "locations": [
+      {
+        "location_id": "LOC3004",
+        "address": "101 Neurology Lane",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA"
+      },
+      {
+        "location_id": "LOC3005",
+        "address": "202 Science Park",
+        "city": "Chicago",
+        "state": "IL",
+        "country": "USA"
+      }
+    ],
+    "start_date": "2024-09-01T00:00:00Z",
+    "end_date": "2026-09-01T00:00:00Z",
+    "status": "completed",
+    "contact_info": {
+      "phone": "+1-212-555-0303",
+      "email": "lemstrial@neuromusculargroup.org",
+      "website": "https://www.neuromusculargroup.org/LEMS"
+    },
+    "data_security_details": "Patient information is encrypted in transit and at rest with access restricted to authorized personnel.",
+    "study_results": [
+      {
+        "date": "2026-10-10T00:00:00Z",
+        "result_summary": "Trial met primary endpoints with significant improvements in neuromuscular function.",
+        "outcome": "positive"
+      }
+    ],
+    "adverse_events": [
+      {
+        "date": "2025-11-15T00:00:00Z",
+        "event_description": "Moderate headache and dizziness reported by several participants.",
+        "severity": "moderate"
+      },
+      {
+        "date": "2025-12-01T00:00:00Z",
+        "event_description": "Severe allergic reaction in one patient, resolved after treatment.",
+        "severity": "severe"
+      }
+    ],
+    "created_at": "2024-08-20T08:00:00Z",
+    "updated_at": "2026-10-11T09:30:00Z",
+    "additional_comments": [
+      "Study design included a double-blind placebo-controlled phase."
+    ],
+    "matching_criteria": [
+      "neuromuscular function tests",
+      "positive antibody test for VGCC"
+    ]
+  }
+  

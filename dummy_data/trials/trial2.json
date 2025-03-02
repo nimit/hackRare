@@ -1,0 +1,69 @@
+{
+    "NCTID": "NCT00987654",
+    "trial_id": "EAXQpsJ9zkytvMrfZbP1",
+    "phase": "Phase 1 & 2",
+    "title": "Efficacy Study of Palovarotene in Fibrodysplasia Ossificans Progressiva",
+    "brief_summary": "An investigation into the efficacy of Palovarotene in reducing heterotopic ossification in FOP patients.",
+    "drug": "Palovarotene",
+    "description": "This Phase II clinical trial explores the potential of palovarotene to limit the progression of bone formation in soft tissues among patients with Fibrodysplasia Ossificans Progressiva.",
+    "disease_targeted": "Fibrodysplasia Ossificans Progressiva",
+    "inclusion_criteria": [
+      { "criterion": "Patients aged 12 to 60 years." },
+      { "criterion": "Documented history of FOP with active flare-ups." }
+    ],
+    "exclusion_criteria": [
+      { "criterion": "Pregnant or breastfeeding women." },
+      { "criterion": "Concurrent use of high-dose corticosteroids." }
+    ],
+    "enrollment_capacity": 50,
+    "sponsor": "Rare Bone Disease Institute",
+    "locations": [
+      {
+        "location_id": "LOC2002",
+        "address": "456 Clinical Way",
+        "city": "San Francisco",
+        "state": "CA",
+        "country": "USA"
+      },
+      {
+        "location_id": "LOC2003",
+        "address": "789 Health Ave",
+        "city": "Seattle",
+        "state": "WA",
+        "country": "USA"
+      }
+    ],
+    "start_date": "2025-06-15T00:00:00Z",
+    "end_date": "2027-06-15T00:00:00Z",
+    "status": "active",
+    "contact_info": {
+      "phone": "+1-415-555-0202",
+      "email": "contact@rarebonedisease.org",
+      "website": "https://www.rarebonedisease.org"
+    },
+    "data_security_details": "Data is stored on secure, HIPAA-compliant servers with regular audits and end-to-end encryption.",
+    "study_results": [
+      {
+        "date": "2026-01-01T00:00:00Z",
+        "result_summary": "Interim analysis shows a reduction in new ossification events in treated patients.",
+        "outcome": "positive"
+      }
+    ],
+    "adverse_events": [
+      {
+        "date": "2025-07-20T00:00:00Z",
+        "event_description": "Mild gastrointestinal discomfort observed in several participants.",
+        "severity": "mild"
+      }
+    ],
+    "created_at": "2025-03-02T13:00:00Z",
+    "updated_at": "2025-07-21T10:00:00Z",
+    "additional_comments": [
+      "Dose adjustments may be necessary based on ongoing observations."
+    ],
+    "matching_criteria": [
+      "age range 12-60",
+      "active flare-up markers"
+    ]
+  }
+  

@@ -1,7 +1,7 @@
 {
-    "id": "string", // value of firebase auth token
+    "user_id": "string", // value of firebase auth token
     "name": "string",
-    "role": "clinic_user", // fixed role identifier
+    "role": "string", // fixed role identifier (ex: study_coordinator)
     "clinic_id": "string", // unique identifier for the clinic
     "patients_managed": [
         "string"

@@ -1,5 +1,5 @@
 {
-    "id": "string", // Unique identifier for the clinic (e.g., a UUID or Firebase auth token)
+    "clinic_id": "string", // Unique identifier for the clinic (e.g., a UUID or Firebase auth token)
     "clinic_name": "string", // Official name of the clinic
     "clinic_address": {
       "street": "string", // Street address

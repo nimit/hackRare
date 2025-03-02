@@ -3,6 +3,7 @@
     name: string,
     age: string,
     gender: string,
+    has_guardian: bool,
     height: [
     {date: datetime, value: number, // in cm; display in ft & in
     },

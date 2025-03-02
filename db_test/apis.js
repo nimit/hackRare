@@ -1,4 +1,4 @@
-import patientData from './dummyData.js';
+import data from './dummyData.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAV_arS9DGmO21ZWJsG_ZhWDFPtbGBSSns",
@@ -58,13 +58,78 @@ function insertPatient() {
     const db = firebase.firestore();
     
     // Reference to the document with ID "x" in patient_users collection
-    const patientDocRef = db.collection("patient_users").doc(user.uid);
+    const patientDocRef = db.collection("patients").doc(user.uid);
     
     // Set the document data (this will create if doesn't exist, or update if it does)
-    return patientDocRef.set(patientData)
+    return patientDocRef.set(data.patientData)
       .then(() => {
         console.log("Document successfully written!");
         document.getElementById("message").innerText = "Patient user data saved successfully";
+        return true;
+      })
+      .catch(error => {
+        console.error("Error writing document: ", error);
+        document.getElementById("message").innerText = "Error saving patient data: " + error.message;
+        return false;
+      });
+  }
+
+// Function to add or update a document with ID "x" in patient_users collection
+function insertTrial() {
+    // Get Firestore reference from the compat CDN version
+    const db = firebase.firestore();
+    
+    // Reference to the document with ID "x" in patient_users collection
+    const trialRef = db.collection("trials").doc(data.trialData.trial_id);
+    
+    // Set the document data (this will create if doesn't exist, or update if it does)
+    return trialRef.set(data.trialData)
+      .then(() => {
+        console.log("Document successfully written!");
+        document.getElementById("message").innerText = "Trial data saved successfully";
+        return true;
+      })
+      .catch(error => {
+        console.error("Error writing document: ", error);
+        document.getElementById("message").innerText = "Error saving patient data: " + error.message;
+        return false;
+      });
+  }
+
+// Function to add or update a document with ID "x" in patient_users collection
+function insertClinic() {
+    // Get Firestore reference from the compat CDN version
+    const db = firebase.firestore();
+    
+    // Reference to the document with ID "x" in patient_users collection
+    const trialRef = db.collection("clinics").doc(data.clinicData.clinic_id);
+    
+    // Set the document data (this will create if doesn't exist, or update if it does)
+    return trialRef.set(data.clinicData)
+      .then(() => {
+        console.log("Document successfully written!");
+        document.getElementById("message").innerText = "Trial data saved successfully";
+        return true;
+      })
+      .catch(error => {
+        console.error("Error writing document: ", error);
+        document.getElementById("message").innerText = "Error saving patient data: " + error.message;
+        return false;
+      });
+  }
+
+function insertClinicUser() {
+    // Get Firestore reference from the compat CDN version
+    const db = firebase.firestore();
+    
+    // Reference to the document with ID "x" in patient_users collection
+    const trialRef = db.collection("clinic_users").doc(data.clinicUserData.user_id);
+    
+    // Set the document data (this will create if doesn't exist, or update if it does)
+    return trialRef.set(data.clinicUserData)
+      .then(() => {
+        console.log("Document successfully written!");
+        document.getElementById("message").innerText = "Trial data saved successfully";
         return true;
       })
       .catch(error => {
@@ -78,4 +143,8 @@ window.signin = signin;
 window.signup = signup;
 window.signout = signout;
 window.insertPatient = insertPatient;
+window.insertTrial = insertTrial;
+signin()
+insertClinic()
+insertClinicUser()
 console.log("Added to window");

@@ -3,6 +3,7 @@
     "name": "Ron",
     "age": 42,
     "gender": "non-binary",
+    "has_guardian": false,
     "height": [
       {
         "date": "2022-12-05T07:45:00Z",

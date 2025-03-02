@@ -1,8 +1,9 @@
 {
-    "id": "toFwUumWAcUcvFsQ0JxNlYHONgD3",
+    "id": "80TiGk8oNpZzioG6EDXc30btLLf2",
     "name": "Ashley",
     "age": 34,
     "gender": "female",
+    "has_guardian": true,
     "height": [
       {
         "date": "2023-01-15T09:30:00Z",
@@ -72,22 +73,24 @@
         "date_detected": "2021-05-10T00:00:00Z"
       }
     ],
+    "approved_trials": [
+      "EAXQpsJ9zkytvMrfZbP1"
+    ],
     "participation": [
       {
-        "trial_id": "dK0BptAsYCuvxriOuE4S",
+        "trial_id": "gYvAzyT6w0P6E9eTwINS",
         "participation_start": "2023-02-01T00:00:00Z",
         "participation_end": "2023-05-01T00:00:00Z",
         "matched_criteria": [
           "age 30-40",
           "non-smoker"
         ],
-        "patient_feedback": "Found the study informative",
+        "patient_feedback": "Found the trial moderately successful",
         "rating": 8
       }
     ],
     "patient_symptoms": [
-      "Shortness of breath",
-      "Occasional wheezing"
+      "neuromuscular function tests"
     ],
     "additional_comments": [
       "Patient reports improved symptoms with medication",
